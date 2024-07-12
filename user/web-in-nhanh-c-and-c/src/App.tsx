@@ -1,7 +1,29 @@
-export default function App() {
+import Navbar from "./components/Navbar.tsx";
+import Hero from "./components/Hero.tsx";
+import Category from "./components/Category.tsx";
+import FeatureSectionFruits from "./components/FeatureSectionFruits.tsx";
+import FeatureSectionBreakfast from "./components/FeatureSectionBreakfast.tsx";
+import BannerSection from "./components/BannerSection.tsx";
+import BlogSection from "./components/BlogSection.tsx";
+import Newsletter from "./components/Newsletter.tsx";
+import FeatureSection from "./components/FeatureSection.tsx";
+import Footer from "./components/Footer.tsx";
+
+const App = () => {
     return (
-        <h1 className="text-3xl font-bold underline">
-            Hello world!
-        </h1>
-    )
+    <main>
+        <Navbar />
+        <Hero/>
+        <Category/>
+        <FeatureSectionFruits/>
+        <FeatureSectionBreakfast/>
+        <BannerSection/>
+        <BlogSection/>
+        <Newsletter/>
+        <FeatureSection/>
+        <Footer/>
+    </main>
+    );
 }
+
+export default App;
