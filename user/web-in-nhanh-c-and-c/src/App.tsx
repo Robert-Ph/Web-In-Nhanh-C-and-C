@@ -9,6 +9,9 @@ import BlogSection from "./components/BlogSection.tsx";
 import Newsletter from "./components/Newsletter.tsx";
 import FeatureSection from "./components/FeatureSection.tsx";
 import Footer from "./components/Footer.tsx";
+import SignUp from "./components/SignUp.tsx";
+import SignIn from "./components/SignIn.tsx";
+import ForgotPass from "./components/ForgotPass.tsx";
 
 const App = () => {
     return (
@@ -23,6 +26,9 @@ const App = () => {
         <Newsletter/>
         <FeatureSection/>
         <Footer/>
+        <SignUp />
+        <SignIn />
+        <ForgotPass />
     </main>
     );
 }
