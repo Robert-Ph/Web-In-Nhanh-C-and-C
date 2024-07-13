@@ -1,8 +1,16 @@
-import {AiOutlineShoppingCart, AiOutlineUser} from "react-icons/ai";
-import {BsSearch} from "react-icons/bs";
-import CartCountBadge from "./CartCountBadge.tsx";
+import { useState } from "react";
+import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
+import { BsSearch } from "react-icons/bs";
+import CartCountBadge from "./CartCountBadge";
+import CartSidebar from "./CartSidebar";
 
 const Navbar = () => {
+    const [isCartOpen, setIsCartOpen] = useState(false);
+
+    const toggleCartSidebar = () => {
+        setIsCartOpen(!isCartOpen);
+    };
+
     return (
         <div className="container hidden lg:block">
             <div className="flex justify-between items-center pt-8">
@@ -20,17 +28,17 @@ const Navbar = () => {
                 </div>
 
                 <div className="flex gap-4">
-                    <div className="icon_wrapper">
-                        <AiOutlineUser/>
+                    <div className="icon_wrapper transition transform hover:scale-110 active:scale-90">
+                        <AiOutlineUser />
                     </div>
-                    <div className="icon_wrapper relative">
-                        <AiOutlineShoppingCart/>
-                        <CartCountBadge size="w-[25px] h-[25px]"/>
+                    <div className="icon_wrapper relative transition transform hover:scale-110 active:scale-90" onClick={toggleCartSidebar}>
+                        <AiOutlineShoppingCart />
+                        <CartCountBadge size="w-[25px] h-[25px]" />
                     </div>
                 </div>
-
             </div>
 
+            <CartSidebar isOpen={isCartOpen} toggleCartSidebar={toggleCartSidebar} />
         </div>
     );
 };

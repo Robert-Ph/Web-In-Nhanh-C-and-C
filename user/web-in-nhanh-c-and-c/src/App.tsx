@@ -1,3 +1,4 @@
+// user/web-in-nhanh-c-and-c/src/App.tsx
 import Navbar from "./components/Navbar.tsx";
 import Hero from "./components/Hero.tsx";
 import Category from "./components/Category.tsx";

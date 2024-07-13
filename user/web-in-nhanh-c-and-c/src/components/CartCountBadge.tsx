@@ -1,3 +1,4 @@
+// src/components/CartCountBadge.tsx
 interface PropsType {
     size: string;
 }
