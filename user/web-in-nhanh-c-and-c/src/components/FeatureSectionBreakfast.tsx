@@ -2,10 +2,10 @@
 import ProductCard from "./ProductCard";
 
 const data = [
-    { id: 0, img: "product__5.webp", name: "Fresh Tomato", price: "$400" },
-    { id: 1, img: "product__2.webp", name: "Crunchy Crisps", price: "$300" },
-    { id: 2, img: "product__3.webp", name: "Jewel Cranberries", price: "$200" },
-    { id: 3, img: "product__4.webp", name: "Almond Organic", price: "$100" },
+    { id: 0, img: "product__5.webp", name: "Fresh Tomato", price: "" },
+    { id: 1, img: "product__2.webp", name: "Crunchy Crisps", price: "" },
+    { id: 2, img: "product__3.webp", name: "Jewel Cranberries", price: "" },
+    { id: 3, img: "product__4.webp", name: "Almond Organic", price: "" },
 ];
 
 const FeatureSectionBreakfast = () => {

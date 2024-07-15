@@ -8,9 +8,8 @@ const Newsletter = () => {
                     <LuMailOpen className="text-[60px]" />
                     <div>
                         <h3 className="text-xl sm:text-2xl font-semibold">
-                            Sign up to Our Newsletters
+                            Liên hệ với chúng tôi
                         </h3>
-                        <p>...and receive $20 coupon for first shopping</p>
                     </div>
                 </div>
                 <div className="w-full max-w-[500px] relative">
@@ -20,7 +19,7 @@ const Newsletter = () => {
                         placeholder="Your Email Address..."
                     />
                     <button className="bg-accentDark absolute top-[50%] right-2 translate-y-[-50%] py-2 px-4 rounded-full hover:bg-accentDarkHover">
-                        Subscribe!
+                        Gửi
                     </button>
                 </div>
             </div>

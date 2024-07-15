@@ -1,24 +1,24 @@
 import {
-    LiaShippingFastSolid,
+    // LiaShippingFastSolid,
     LiaMoneyBillWaveSolid,
-    LiaGiftSolid,
+    // LiaGiftSolid,
 } from "react-icons/lia";
 import { FiPhoneCall } from "react-icons/fi";
 import FeatureCard from "./FeatureCard.tsx";
 
 const data = [
-    {
-        title: "Free Shipping",
-        icon: <LiaShippingFastSolid />,
-    },
+    // {
+    //     title: "Free Shipping",
+    //     icon: <LiaShippingFastSolid />,
+    // },
     {
         title: "Best Price Guarantee",
         icon: <LiaMoneyBillWaveSolid />,
     },
-    {
-        title: "Free Curbside Pickup",
-        icon: <LiaGiftSolid />,
-    },
+    // {
+    //     title: "Free Curbside Pickup",
+    //     icon: <LiaGiftSolid />,
+    // },
     {
         title: "Support 24/7",
         icon: <FiPhoneCall />,
