@@ -1,5 +1,5 @@
 // src/App.tsx
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Category from "./components/Category";
@@ -14,6 +14,8 @@ import ProductDetail from "./components/ProductDetail";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import ForgotPass from "./components/ForgotPass";
+import Cart from "./components/Cart";
+import Checkout from "./components/Checkout.tsx";
 
 const App = () => {
     return (
@@ -48,9 +50,12 @@ const App = () => {
                         ]}
                     />
                 }/>
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/forgotpass" element={<ForgotPass />} />
+                <Route path="/signin" element={<SignIn/>}/>
+                <Route path="/signup" element={<SignUp/>}/>
+                <Route path="/forgotpass" element={<ForgotPass/>}/>
+                <Route path="/cart" element={<Cart/>}/>
+                <Route path="/checkout" element={<Checkout />} />
+
             </Routes>
             <Footer/>
         </Router>
