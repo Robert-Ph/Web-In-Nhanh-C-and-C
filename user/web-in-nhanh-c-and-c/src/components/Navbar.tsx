@@ -1,14 +1,27 @@
+// src/components/Navbar.tsx
 import { useState } from "react";
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
 import CartCountBadge from "./CartCountBadge";
 import CartSidebar from "./CartSidebar";
+import ReactCountryFlag from "react-country-flag";
 
 const Navbar = () => {
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+    const [selectedLanguage, setSelectedLanguage] = useState("VN");
 
     const toggleCartSidebar = () => {
         setIsCartOpen(!isCartOpen);
+    };
+
+    const toggleLanguageDropdown = () => {
+        setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
+    };
+
+    const handleLanguageChange = (countryCode: string) => {
+        setSelectedLanguage(countryCode);
+        setIsLanguageDropdownOpen(false);
     };
 
     return (
@@ -27,7 +40,55 @@ const Navbar = () => {
                     />
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
+                    <div className="relative" onClick={toggleLanguageDropdown}>
+                        <ReactCountryFlag
+                            countryCode={selectedLanguage}
+                            svg
+                            style={{
+                                width: '2em',
+                                height: '2em',
+                                cursor: 'pointer'
+                            }}
+                            title={selectedLanguage === "VN" ? "Tiếng Việt" : "English"}
+                        />
+                        {isLanguageDropdownOpen && (
+                            <div className="absolute top-full mt-1 right-0 bg-white border rounded shadow-lg z-50">
+                                {selectedLanguage !== "VN" && (
+                                    <div
+                                        className="p-2 cursor-pointer hover:bg-gray-200"
+                                        onClick={() => handleLanguageChange("VN")}
+                                    >
+                                        <ReactCountryFlag
+                                            countryCode="VN"
+                                            svg
+                                            style={{
+                                                width: '2em',
+                                                height: '2em'
+                                            }}
+                                            title="Tiếng Việt"
+                                        />
+                                    </div>
+                                )}
+                                {selectedLanguage !== "US" && (
+                                    <div
+                                        className="p-2 cursor-pointer hover:bg-gray-200"
+                                        onClick={() => handleLanguageChange("US")}
+                                    >
+                                        <ReactCountryFlag
+                                            countryCode="US"
+                                            svg
+                                            style={{
+                                                width: '2em',
+                                                height: '2em'
+                                            }}
+                                            title="English"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
                     <div className="icon_wrapper transition transform hover:scale-110 active:scale-90">
                         <AiOutlineUser />
                     </div>

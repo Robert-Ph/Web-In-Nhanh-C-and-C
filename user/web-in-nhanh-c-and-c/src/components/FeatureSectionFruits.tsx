@@ -34,7 +34,7 @@ const FeatureSectionFruits = () => {
                         img={el.img}
                         name={el.name}
                         price={el.price}
-                    />
+                        id={0}/>
                 ))}
             </div>
         </div>

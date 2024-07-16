@@ -1,3 +1,4 @@
+// user/web-in-nhanh-c-and-c/src/components/Hero.tsx
 // import { BsArrowRight } from "react-icons/bs";
 
 const Hero = () => {
