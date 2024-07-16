@@ -1,6 +1,6 @@
-// src/components/ProductDetail.tsx
 import { AiFillStar, AiOutlineStar, AiOutlineShopping } from "react-icons/ai";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RelatedProducts from "./RelatedProducts.tsx";
 
 interface Review {
@@ -20,10 +20,13 @@ interface ProductDetailProps {
     reviews: Review[];
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({
-                                                         // id,
-                                                         images, name, price, description, rating, reviews }) => {
+const ProductDetail: React.FC<ProductDetailProps> = ({ images, name, price, description, rating, reviews }) => {
     const [selectedImage, setSelectedImage] = useState(images[0]);
+    const navigate = useNavigate();
+
+    const handleOrderClick = () => {
+        navigate('/checkout');
+    };
 
     return (
         <div className="container mx-auto py-16 px-4">
@@ -49,9 +52,16 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
                     </div>
                     <h2 className="text-2xl font-bold text-red-600">{price}</h2>
                     <p className="text-gray-600">{description}</p>
-                    <button className="mt-4 bg-accent text-white text-[28px] w-[50px] h-[50px] rounded-full grid place-items-center cursor-pointer">
-                        <AiOutlineShopping />
-                    </button>
+                    <div className="flex items-center space-x-4 mt-4">
+                        <button className="mt-4 bg-accent text-white text-[50px] w-[70px] h-[70px] rounded-full grid place-items-center cursor-pointer">
+                            <AiOutlineShopping/>
+                        </button>
+                        <button
+                            onClick={handleOrderClick}
+                            className="bg-blue-600 text-white text-4xl w-auto h-[85px] py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">
+                            Đặt hàng
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className="mt-16">
@@ -66,7 +76,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
                             {review.image && <img className="mt-2 w-full h-full object-cover" src={review.image} alt={`Review ${index + 1} image`} />}
                             {review.video && <video className="mt-2 w-full" controls>
                                 <source src={review.video} type="video/mp4" />
-                                Your browser does not support the video tag.
+                                Trình duyệt của bạn không hỗ trợ thẻ video.
                             </video>}
                         </div>
                     ))}
