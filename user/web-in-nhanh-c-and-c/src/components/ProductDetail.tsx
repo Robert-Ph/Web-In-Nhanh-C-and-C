@@ -58,7 +58,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ images, name, price, desc
                         </button>
                         <button
                             onClick={handleOrderClick}
-                            className="bg-blue-600 text-white text-lg w-[150px] h-[70px] py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">
+                            className="bg-blue-600 text-white text-4xl w-auto h-[85px] py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">
                             Đặt hàng
                         </button>
                     </div>
