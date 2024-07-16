@@ -16,11 +16,13 @@ import SignUp from "./components/SignUp";
 import ForgotPass from "./components/ForgotPass";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout.tsx";
+import Breadcrumb from "./components/Breadcrumb.tsx";
 
 const App = () => {
     return (
         <Router>
             <Navbar/>
+            <Breadcrumb/>
             <Routes>
                 <Route path="/" element={
                     <main>
