@@ -58,7 +58,7 @@ const Category = () => {
         <div className="container pt-16">
             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {data.map((el) => (
-                    <Link to={`/danh-muc/${el.id}`} key={el.id}>
+                    <Link to={`/category/${el.id}`} key={el.id}>
                         <CategoryCard
                             img={el.img}
                             name={el.name}

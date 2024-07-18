@@ -54,13 +54,13 @@ const App = () => {
                             {rating: 4, comment: "Rất tốt, nhưng hơi ngọt.", video: "/review_video_1.mp4"}
                         ]}
                     />
-                }/>
-                <Route path="/dang-nhap" element={<SignIn/>}/>
-                <Route path="/dang-ky" element={<SignUp/>}/>
-                <Route path="/quen-mat-khau" element={<ForgotPass/>}/>
-                <Route path="/gio-hang" element={<Cart/>}/>
-                <Route path="/thanh-toan" element={<Checkout/>}/>
-                <Route path="/danh-muc/:id" element={<ProductListing/>}/>
+                } />
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/forgotpass" element={<ForgotPass />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/category/:id" element={<ProductListing />} />
             </Routes>
             <Footer/>
         </Router>

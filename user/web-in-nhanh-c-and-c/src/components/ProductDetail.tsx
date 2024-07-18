@@ -1,5 +1,5 @@
 // user/web-in-nhanh-c-and-c/src/components/ProductDetail.tsx
-import { AiFillStar, AiOutlineStar, AiOutlineShopping } from "react-icons/ai";
+import { AiFillStar, AiOutlineStar, AiOutlineShoppingCart } from "react-icons/ai";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RelatedProducts from "./RelatedProducts.tsx";
@@ -55,8 +55,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ images, name, price, desc
                     <p className="text-gray-600">{description}</p>
                     <div className="flex items-center space-x-4 mt-4">
                         <button
-                            className="mt-4 bg-accent text-white text-[50px] w-[100px] h-[100px] rounded-full grid place-items-center cursor-pointer">
-                            <AiOutlineShopping/>
+                            className="flex items-center bg-blue-600 text-white text-4xl py-2 px-6 w-auto h-[85px] rounded-lg hover:bg-blue-700 transition duration-300">
+                            <AiOutlineShoppingCart className="mr-2" size={30} />
+                            Thêm vào giỏ hàng
                         </button>
                         <button
                             onClick={handleOrderClick}
@@ -64,11 +65,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ images, name, price, desc
                             Đặt hàng
                         </button>
                     </div>
-                    <h2 className="text-2xl font-bold text-red-600">Chú ý:Chúng tôi sẽ liên hệ sớm nhất tới bạn sau khi đặt hàng</h2>
+                    <h2 className="text-2xl font-bold text-red-600">Chú ý: Chúng tôi sẽ liên hệ sớm nhất tới bạn sau khi đặt hàng</h2>
                 </div>
             </div>
             <div className="mt-16">
-            <h2 className="text-2xl font-bold">Đánh giá</h2>
+                <h2 className="text-2xl font-bold">Đánh giá</h2>
                 <div className="space-y-4">
                     {reviews.map((review, index) => (
                         <div key={index} className="border border-gray-200 p-4 rounded-lg">
