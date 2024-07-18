@@ -53,7 +53,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ images, name, price, desc
                     <h2 className="text-2xl font-bold text-red-600">{price}</h2>
                     <p className="text-gray-600">{description}</p>
                     <div className="flex items-center space-x-4 mt-4">
-                        <button className="mt-4 bg-accent text-white text-[50px] w-[70px] h-[70px] rounded-full grid place-items-center cursor-pointer">
+                        <button
+                            className="mt-4 bg-accent text-white text-[50px] w-[100px] h-[100px] rounded-full grid place-items-center cursor-pointer">
                             <AiOutlineShopping/>
                         </button>
                         <button
@@ -62,10 +63,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ images, name, price, desc
                             Đặt hàng
                         </button>
                     </div>
+                    <h2 className="text-2xl font-bold text-red-600">Chú ý:Chúng tôi sẽ liên hệ sớm nhất tới bạn sau khi đặt hàng</h2>
                 </div>
             </div>
             <div className="mt-16">
-                <h2 className="text-2xl font-bold">Đánh giá</h2>
+            <h2 className="text-2xl font-bold">Đánh giá</h2>
                 <div className="space-y-4">
                     {reviews.map((review, index) => (
                         <div key={index} className="border border-gray-200 p-4 rounded-lg">
