@@ -4,12 +4,12 @@ import ProductCard from "./ProductCard"; // Assuming ProductCard component is de
 const RelatedProducts = () => {
     const data = [
         { id: 0, img: "/product__1.webp", name: "Dried Mango", price: "" },
-        { id: 0, img: "/product__1.webp", name: "Dried Mango", price: "" },
-        { id: 0, img: "/product__1.webp", name: "Dried Mango", price: "" },
-        { id: 0, img: "/product__1.webp", name: "Dried Mango", price: "" },
-        { id: 0, img: "/product__1.webp", name: "Dried Mango", price: "" },
-        { id: 0, img: "/product__1.webp", name: "Dried Mango", price: "" },
-        { id: 0, img: "/product__1.webp", name: "Dried Mango", price: "" },
+        { id: 1, img: "/product__1.webp", name: "Dried Mango", price: "" },
+        { id: 2, img: "/product__1.webp", name: "Dried Mango", price: "" },
+        { id: 3, img: "/product__1.webp", name: "Dried Mango", price: "" },
+        { id: 4, img: "/product__1.webp", name: "Dried Mango", price: "" },
+        { id: 5, img: "/product__1.webp", name: "Dried Mango", price: "" },
+        { id: 6, img: "/product__1.webp", name: "Dried Mango", price: "" },
     ];
 
     return (

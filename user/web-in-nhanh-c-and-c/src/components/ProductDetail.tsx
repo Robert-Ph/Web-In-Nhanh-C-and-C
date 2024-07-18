@@ -21,7 +21,9 @@ interface ProductDetailProps {
     reviews: Review[];
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ images, name, price, description, rating, reviews }) => {
+const ProductDetail: React.FC<ProductDetailProps> = ({ images, name,
+                                                         // price,
+                                                         description, rating, reviews }) => {
     const [selectedImage, setSelectedImage] = useState(images[0]);
     const navigate = useNavigate();
 
@@ -51,7 +53,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ images, name, price, desc
                     <div className="text-yellow-400 flex gap-[2px] text-[20px]">
                         {Array.from({ length: 5 }, (_, i) => i < rating ? <AiFillStar key={i} /> : <AiOutlineStar key={i} />)}
                     </div>
-                    <h2 className="text-2xl font-bold text-red-600">{price}</h2>
+                    {/*<h2 className="text-2xl font-bold text-red-600">{price}</h2>*/}
                     <p className="text-gray-600">{description}</p>
                     <div className="flex items-center space-x-4 mt-4">
                         <button

@@ -1,4 +1,21 @@
 // src/components/Checkout.tsx
+import { useEffect, useState } from "react";
+
+interface City {
+    id: number;
+    full_name: string;
+}
+
+interface District {
+    id: number;
+    full_name: string;
+}
+
+interface Ward {
+    id: number;
+    full_name: string;
+}
+
 const Checkout = () => {
     const cartItems = [
         {
@@ -16,6 +33,65 @@ const Checkout = () => {
             image: "/product__2.webp",
         },
     ];
+
+    const [cities, setCities] = useState<City[]>([]);
+    const [districts, setDistricts] = useState<District[]>([]);
+    const [wards, setWards] = useState<Ward[]>([]);
+    const [selectedCity, setSelectedCity] = useState<string>('');
+    const [selectedDistrict, setSelectedDistrict] = useState<string>('');
+    const [selectedWard, setSelectedWard] = useState<string>('');
+    const [streetAddress, setStreetAddress] = useState<string>('');
+
+    useEffect(() => {
+        // Lấy danh sách tỉnh/thành
+        fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
+            .then(response => response.json())
+            .then(data => {
+                if (data.error === 0) {
+                    setCities(data.data);
+                }
+            });
+    }, []);
+
+    const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const cityId = e.target.options[e.target.selectedIndex].dataset.id;
+        if (cityId) {
+            setSelectedCity(e.target.value);
+            fetch(`https://esgoo.net/api-tinhthanh/2/${cityId}.htm`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error === 0) {
+                        setDistricts(data.data);
+                        setWards([]);
+                        setSelectedDistrict('');
+                        setSelectedWard('');
+                    }
+                });
+        }
+    };
+
+    const handleDistrictChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const districtId = e.target.options[e.target.selectedIndex].dataset.id;
+        if (districtId) {
+            setSelectedDistrict(e.target.value);
+            fetch(`https://esgoo.net/api-tinhthanh/3/${districtId}.htm`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error === 0) {
+                        setWards(data.data);
+                        setSelectedWard('');
+                    }
+                });
+        }
+    };
+
+    const handleWardChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedWard(e.target.value);
+    };
+
+    const getAddress = () => {
+        return `${streetAddress} ${selectedWard} ${selectedDistrict} ${selectedCity}`;
+    };
 
     // const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -57,27 +133,68 @@ const Checkout = () => {
                         <h2 className="text-xl font-semibold mb-4">Địa Chỉ Giao Hàng</h2>
                         <form>
                             <div className="mb-4">
-                                <label className="block text-gray-700">Địa Chỉ</label>
+                                <label className="block text-gray-700">Số nhà, Đường</label>
                                 <input
                                     type="text"
                                     className="w-full p-2 border rounded"
                                     placeholder="123 Đường Chính"
+                                    value={streetAddress}
+                                    onChange={(e) => setStreetAddress(e.target.value)}
                                 />
                             </div>
                             <div className="mb-4">
                                 <label className="block text-gray-700">Thành Phố</label>
-                                <input
-                                    type="text"
+                                <select
+                                    id="city"
+                                    onChange={handleCityChange}
                                     className="w-full p-2 border rounded"
-                                    placeholder="Hà Nội"
-                                />
+                                >
+                                    <option value="">Chọn Thành Phố</option>
+                                    {cities.map((city) => (
+                                        <option key={city.id} data-id={city.id} value={city.full_name}>
+                                            {city.full_name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-gray-700">Tỉnh/Bang</label>
+                                <label className="block text-gray-700">Quận/Huyện</label>
+                                <select
+                                    id="district"
+                                    onChange={handleDistrictChange}
+                                    className="w-full p-2 border rounded"
+                                >
+                                    <option value="">Chọn Quận/Huyện</option>
+                                    {districts.map((district) => (
+                                        <option key={district.id} data-id={district.id} value={district.full_name}>
+                                            {district.full_name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700">Phường/Xã</label>
+                                <select
+                                    id="ward"
+                                    onChange={handleWardChange}
+                                    className="w-full p-2 border rounded"
+                                >
+                                    <option value="">Chọn Phường/Xã</option>
+                                    {wards.map((ward) => (
+                                        <option key={ward.id} value={ward.full_name}>
+                                            {ward.full_name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700">Địa Chỉ</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 border rounded"
-                                    placeholder="Hà Nội"
+                                    className="w-full p-2 border rounded bg-gray-100"
+                                    placeholder="Địa chỉ đầy đủ"
+                                    value={getAddress()}
+                                    readOnly
                                 />
                             </div>
                             <div className="mb-4">

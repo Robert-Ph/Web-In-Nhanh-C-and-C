@@ -17,7 +17,7 @@ import ForgotPass from "./components/ForgotPass";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import Breadcrumb from "./components/Breadcrumb";
-import ProductListing from "./components/ProductListing";
+import ProductList from "./components/ProductList.tsx";
 import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
@@ -60,7 +60,7 @@ const App = () => {
                 <Route path="/forgotpass" element={<ForgotPass />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
-                <Route path="/category/:id" element={<ProductListing />} />
+                <Route path="/category/:id" element={<ProductList />} />
             </Routes>
             <Footer/>
         </Router>
