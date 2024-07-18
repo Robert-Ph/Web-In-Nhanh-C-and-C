@@ -11,7 +11,7 @@ const FeatureCard: React.FC<propsType> = ({ title, icon }) => {
             </div>
             <div>
                 <h3 className="text-accent font-medium text-xl">{title}</h3>
-                <p className="text-gray-500 text-[14px]">Lorem, ipsum dolor.</p>
+                <p className="text-gray-500 text-[14px]">Cảm ơn rất nhiều.</p>
             </div>
         </div>
     );

@@ -17,7 +17,7 @@ const Checkout = () => {
         },
     ];
 
-    const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    // const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
     return (
         <div className="container mx-auto p-4">
@@ -98,37 +98,37 @@ const Checkout = () => {
                             </div>
                         </form>
                     </div>
-                    <div className="bg-white p-4 shadow rounded-lg mb-6">
-                        <h2 className="text-xl font-semibold mb-4">Phương Thức Thanh Toán</h2>
-                        <form>
-                            <div className="mb-4">
-                                <label className="block text-gray-700">Số Thẻ</label>
-                                <input
-                                    type="text"
-                                    className="w-full p-2 border rounded"
-                                    placeholder="1234 5678 9012 3456"
-                                />
-                            </div>
-                            <div className="flex gap-4">
-                                <div className="mb-4 flex-1">
-                                    <label className="block text-gray-700">Ngày Hết Hạn</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-2 border rounded"
-                                        placeholder="MM/YY"
-                                    />
-                                </div>
-                                <div className="mb-4 flex-1">
-                                    <label className="block text-gray-700">CVV</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-2 border rounded"
-                                        placeholder="123"
-                                    />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    {/*<div className="bg-white p-4 shadow rounded-lg mb-6">*/}
+                    {/*    <h2 className="text-xl font-semibold mb-4">Phương Thức Thanh Toán</h2>*/}
+                    {/*    <form>*/}
+                    {/*        <div className="mb-4">*/}
+                    {/*            <label className="block text-gray-700">Số Thẻ</label>*/}
+                    {/*            <input*/}
+                    {/*                type="text"*/}
+                    {/*                className="w-full p-2 border rounded"*/}
+                    {/*                placeholder="1234 5678 9012 3456"*/}
+                    {/*            />*/}
+                    {/*        </div>*/}
+                    {/*        <div className="flex gap-4">*/}
+                    {/*            <div className="mb-4 flex-1">*/}
+                    {/*                <label className="block text-gray-700">Ngày Hết Hạn</label>*/}
+                    {/*                <input*/}
+                    {/*                    type="text"*/}
+                    {/*                    className="w-full p-2 border rounded"*/}
+                    {/*                    placeholder="MM/YY"*/}
+                    {/*                />*/}
+                    {/*            </div>*/}
+                    {/*            <div className="mb-4 flex-1">*/}
+                    {/*                <label className="block text-gray-700">CVV</label>*/}
+                    {/*                <input*/}
+                    {/*                    type="text"*/}
+                    {/*                    className="w-full p-2 border rounded"*/}
+                    {/*                    placeholder="123"*/}
+                    {/*                />*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </form>*/}
+                    {/*</div>*/}
                 </div>
                 <div className="w-full lg:w-1/3">
                     <div className="bg-white p-4 shadow rounded-lg">
@@ -138,25 +138,25 @@ const Checkout = () => {
                                 <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-lg" />
                                 <div className="ml-4 flex-1">
                                     <h3 className="text-lg font-semibold">{item.name}</h3>
-                                    <p className="text-gray-600">Số Lượng: {item.quantity}</p>
+                                    {/*<p className="text-gray-600">Số Lượng: {item.quantity}</p>*/}
                                     {/*<p className="text-gray-600">Giá: {item.price}</p>*/}
                                 </div>
                             </div>
                         ))}
-                        <div className="border-t pt-4 mt-4">
-                            <div className="flex justify-between mb-2">
-                                <span className="text-gray-700">Tạm Tính</span>
-                                <span className="text-gray-700">{totalPrice}</span>
-                            </div>
-                            <div className="flex justify-between mb-2">
-                                <span className="text-gray-700">Phí Vận Chuyển</span>
-                                <span className="text-gray-700">5</span>
-                            </div>
-                            <div className="flex justify-between font-semibold">
-                                <span className="text-lg">Tổng</span>
-                                <span className="text-lg">{totalPrice + 5}</span>
-                            </div>
-                        </div>
+                        {/*<div className="border-t pt-4 mt-4">*/}
+                        {/*    <div className="flex justify-between mb-2">*/}
+                        {/*        <span className="text-gray-700">Tạm Tính</span>*/}
+                        {/*        /!*<span className="text-gray-700">{totalPrice}</span>*!/*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex justify-between mb-2">*/}
+                        {/*        <span className="text-gray-700">Phí Vận Chuyển</span>*/}
+                        {/*        <span className="text-gray-700">5</span>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex justify-between font-semibold">*/}
+                        {/*        <span className="text-lg">Tổng</span>*/}
+                        {/*        <span className="text-lg">{totalPrice + 5}</span>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                         <button className="w-full bg-blue-600 text-white py-2 rounded-lg mt-4 hover:bg-blue-700">Đặt Hàng</button>
                     </div>
                 </div>
