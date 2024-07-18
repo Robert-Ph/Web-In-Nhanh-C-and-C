@@ -1,3 +1,4 @@
+// user/web-in-nhanh-c-and-c/src/components/ProductDetail.tsx
 import { AiFillStar, AiOutlineStar, AiOutlineShopping } from "react-icons/ai";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

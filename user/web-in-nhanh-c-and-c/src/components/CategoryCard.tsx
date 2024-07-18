@@ -1,3 +1,4 @@
+// user/web-in-nhanh-c-and-c/src/components/CategoryCard.tsx
 interface propsType {
     img: string;
     name: string;
@@ -19,3 +20,4 @@ const CategoryCard: React.FC<propsType> = ({ img, name, count }) => {
 };
 
 export default CategoryCard;
+
