@@ -1,3 +1,4 @@
+// user/web-in-nhanh-c-and-c/src/components/FeatureSectionFruits.tsx
 import ProductCard from "./ProductCard.tsx";
 
 const data = [

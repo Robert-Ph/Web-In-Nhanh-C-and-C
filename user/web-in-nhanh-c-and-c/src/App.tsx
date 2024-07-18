@@ -15,12 +15,15 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import ForgotPass from "./components/ForgotPass";
 import Cart from "./components/Cart";
-import Checkout from "./components/Checkout.tsx";
-import Breadcrumb from "./components/Breadcrumb.tsx";
+import Checkout from "./components/Checkout";
+import Breadcrumb from "./components/Breadcrumb";
+import ProductListing from "./components/ProductListing";
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
     return (
         <Router>
+            <ScrollToTop/>
             <Navbar/>
             <Breadcrumb/>
             <Routes>
@@ -42,22 +45,22 @@ const App = () => {
                     <ProductDetail
                         id={0}
                         images={["/product__1.webp", "/product__2.webp", "/product__3.webp"]}
-                        name="Dried Mango"
+                        name="Xoài Sấy"
                         price="$20"
-                        description="Delicious dried mango with a sweet and tangy taste."
+                        description="Xoài sấy ngon với vị ngọt và chua."
                         rating={4}
                         reviews={[
-                            {rating: 5, comment: "Excellent!", image: "/review_image_1.jpg"},
-                            {rating: 4, comment: "Very good, but a bit too sweet.", video: "/review_video_1.mp4"}
+                            {rating: 5, comment: "Tuyệt vời!", image: "/review_image_1.jpg"},
+                            {rating: 4, comment: "Rất tốt, nhưng hơi ngọt.", video: "/review_video_1.mp4"}
                         ]}
                     />
-                }/>
-                <Route path="/signin" element={<SignIn/>}/>
-                <Route path="/signup" element={<SignUp/>}/>
-                <Route path="/forgotpass" element={<ForgotPass/>}/>
-                <Route path="/cart" element={<Cart/>}/>
+                } />
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/forgotpass" element={<ForgotPass />} />
+                <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
-
+                <Route path="/category/:id" element={<ProductListing />} />
             </Routes>
             <Footer/>
         </Router>
