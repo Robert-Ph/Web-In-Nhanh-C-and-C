@@ -27,7 +27,7 @@ const mockProducts = [
     // Add more mock products here as needed
 ];
 
-const ProductListing = () => {
+const ProductList = () => {
     const { id } = useParams();
     const [products, setProducts] = useState(mockProducts);
     const [search, setSearch] = useState('');
@@ -139,4 +139,4 @@ const ProductListing = () => {
     );
 };
 
-export default ProductListing;
+export default ProductList;
