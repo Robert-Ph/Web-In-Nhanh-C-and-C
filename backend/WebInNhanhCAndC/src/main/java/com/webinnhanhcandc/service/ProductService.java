@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +48,11 @@ public class ProductService {
         }
 
         return products.map(this::convertToDTO);
+    }
+
+    public ProductDTO1 getProductById(Integer productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        return productOptional.map(this::convertToDTO).orElse(null); // Trả về null nếu không tìm thấy sản phẩm
     }
 
     private ProductDTO1 convertToDTO(Product product) {
