@@ -1,15 +1,17 @@
 // src/components/Navbar.tsx
-import { useState } from "react";
-import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
-import { BsSearch } from "react-icons/bs";
-import CartCountBadge from "./CartCountBadge";
-import CartSidebar from "./CartSidebar";
-import ReactCountryFlag from "react-country-flag";
+import React from 'react';
+import {AiOutlineShoppingCart, AiOutlineUser} from 'react-icons/ai';
+import {BsSearch} from 'react-icons/bs';
+import CartCountBadge from './CartCountBadge';
+import CartSidebar from './CartSidebar';
+import ReactCountryFlag from 'react-country-flag';
+import {useTheme} from '../context/ThemeContext';
 
 const Navbar = () => {
-    const [isCartOpen, setIsCartOpen] = useState(false);
-    const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
-    const [selectedLanguage, setSelectedLanguage] = useState("VN");
+    const {theme} = useTheme();
+    const [isCartOpen, setIsCartOpen] = React.useState(false);
+    const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = React.useState(false);
+    const [selectedLanguage, setSelectedLanguage] = React.useState('VN');
 
     const toggleCartSidebar = () => {
         setIsCartOpen(!isCartOpen);
@@ -25,8 +27,8 @@ const Navbar = () => {
     };
 
     return (
-        <div className="container pb-10 hidden lg:block">
-            <div className="flex justify-between items-center pt-8">
+        <div className="container pb-5 hidden lg:block" style={{backgroundColor: theme.navbarBackground}}>
+            <div className="flex justify-between items-center pt-8 navbar">
                 <h1 className="text-4xl font-medium">Logo</h1>
                 <div className="relative w-full max-w-[500px]">
                     <input
@@ -50,14 +52,14 @@ const Navbar = () => {
                                 height: '2em',
                                 cursor: 'pointer'
                             }}
-                            title={selectedLanguage === "VN" ? "Tiếng Việt" : "English"}
+                            title={selectedLanguage === 'VN' ? 'Tiếng Việt' : 'English'}
                         />
                         {isLanguageDropdownOpen && (
                             <div className="absolute top-full mt-1 right-0 bg-white border rounded shadow-lg z-50">
-                                {selectedLanguage !== "VN" && (
+                                {selectedLanguage !== 'VN' && (
                                     <div
                                         className="p-2 cursor-pointer hover:bg-gray-200"
-                                        onClick={() => handleLanguageChange("VN")}
+                                        onClick={() => handleLanguageChange('VN')}
                                     >
                                         <ReactCountryFlag
                                             countryCode="VN"
@@ -70,10 +72,10 @@ const Navbar = () => {
                                         />
                                     </div>
                                 )}
-                                {selectedLanguage !== "US" && (
+                                {selectedLanguage !== 'US' && (
                                     <div
                                         className="p-2 cursor-pointer hover:bg-gray-200"
-                                        onClick={() => handleLanguageChange("US")}
+                                        onClick={() => handleLanguageChange('US')}
                                     >
                                         <ReactCountryFlag
                                             countryCode="US"
@@ -90,16 +92,17 @@ const Navbar = () => {
                         )}
                     </div>
                     <div className="icon_wrapper transition transform hover:scale-110 active:scale-90">
-                        <AiOutlineUser />
+                        <AiOutlineUser/>
                     </div>
-                    <div className="icon_wrapper relative transition transform hover:scale-110 active:scale-90" onClick={toggleCartSidebar}>
-                        <AiOutlineShoppingCart />
-                        <CartCountBadge size="w-[25px] h-[25px]" />
+                    <div className="icon_wrapper relative transition transform hover:scale-110 active:scale-90"
+                         onClick={toggleCartSidebar}>
+                        <AiOutlineShoppingCart/>
+                        <CartCountBadge size="w-[25px] h-[25px]"/>
                     </div>
                 </div>
             </div>
 
-            <CartSidebar isOpen={isCartOpen} toggleCartSidebar={toggleCartSidebar} />
+            <CartSidebar isOpen={isCartOpen} toggleCartSidebar={toggleCartSidebar}/>
         </div>
     );
 };
