@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,9 +17,8 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer product_id;
+    private Integer productId;
 
-    @Getter
     @Column(name = "category_id")
     private Integer categoryId;
 
@@ -41,5 +41,4 @@ public class Product {
         discontinued,
         hidden
     }
-
 }
