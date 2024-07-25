@@ -1,5 +1,6 @@
 // src/App.tsx
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Category from "./components/Category";
@@ -22,48 +23,50 @@ import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
     return (
-        <Router>
-            <ScrollToTop/>
-            <Navbar/>
-            <Breadcrumb/>
-            <Routes>
-                <Route path="/" element={
-                    <main>
-                        <div className="relative z-10">
-                            <Hero/>
-                        </div>
-                        <Category/>
-                        <FeatureSectionFruits/>
-                        <FeatureSectionBreakfast/>
-                        <BannerSection/>
-                        <BlogSection/>
-                        <Newsletter/>
-                        <FeatureSection/>
-                    </main>
-                }/>
-                <Route path="/product/:id" element={
-                    <ProductDetail
-                        id={0}
-                        images={["/product__1.webp", "/product__2.webp", "/product__3.webp"]}
-                        name="Xoài Sấy"
-                        price="$20"
-                        description="Xoài sấy ngon với vị ngọt và chua."
-                        rating={4}
-                        reviews={[
-                            {rating: 5, comment: "Tuyệt vời!", image: "/review_image_1.jpg"},
-                            {rating: 4, comment: "Rất tốt, nhưng hơi ngọt.", video: "/review_video_1.mp4"}
-                        ]}
-                    />
-                } />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/forgotpass" element={<ForgotPass />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/category/:id" element={<ProductList />} />
-            </Routes>
-            <Footer/>
-        </Router>
+        <ThemeProvider>
+            <Router>
+                <ScrollToTop/>
+                <Navbar/>
+                <Breadcrumb/>
+                <Routes>
+                    <Route path="/" element={
+                        <main>
+                            <div className="relative z-10">
+                                <Hero/>
+                            </div>
+                            <Category/>
+                            <FeatureSectionFruits/>
+                            <FeatureSectionBreakfast/>
+                            <BannerSection/>
+                            <BlogSection/>
+                            <Newsletter/>
+                            <FeatureSection/>
+                        </main>
+                    }/>
+                    <Route path="/product/:id" element={
+                        <ProductDetail
+                            id={0}
+                            images={["/product__1.webp", "/product__2.webp", "/product__3.webp"]}
+                            name="Xoài Sấy"
+                            price="$20"
+                            description="Xoài sấy ngon với vị ngọt và chua."
+                            rating={4}
+                            reviews={[
+                                {rating: 5, comment: "Tuyệt vời!", image: "/review_image_1.jpg"},
+                                {rating: 4, comment: "Rất tốt, nhưng hơi ngọt.", video: "/review_video_1.mp4"}
+                            ]}
+                        />
+                    } />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/forgotpass" element={<ForgotPass />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/category/:id" element={<ProductList />} />
+                </Routes>
+                <Footer/>
+            </Router>
+        </ThemeProvider>
     );
 }
 
