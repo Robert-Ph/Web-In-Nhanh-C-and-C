@@ -11,6 +11,7 @@ import java.util.List;
 public class ProductDTO1 {
     private Integer productId;
     private Integer categoryId;
+    private String categoryName;
     private String productName;
     private String description;
     private String status;

@@ -2,34 +2,30 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from './ProductCard';
 import Banner from './Banner';
+import axios from 'axios';
 
-const mockProducts = [
-    { id: 1, name: "Sản phẩm 1", price: 20, type: "Trái cây", img: "/product__1.webp" },
-    { id: 2, name: "Sản phẩm 2", price: 25, type: "Rau củ", img: "/product__2.webp" },
-    { id: 3, name: "Sản phẩm 3", price: 25, type: "Rau củ 2", img: "/product__3.webp" },
-    { id: 4, name: "Sản phẩm 4", price: 25, type: "Rau củ 3", img: "/product__4.webp" },
-    { id: 5, name: "Sản phẩm 5", price: 25, type: "Rau củ 4", img: "/product__1.webp" },
-    { id: 6, name: "Sản phẩm 6", price: 25, type: "Trái cây", img: "/product__2.webp" },
-    { id: 7, name: "Sản phẩm 7", price: 25, type: "Rau củ 2", img: "/product__3.webp" },
-    { id: 8, name: "Sản phẩm 8", price: 25, type: "Rau củ 3", img: "/product__4.webp" },
-    { id: 9, name: "Sản phẩm 9", price: 25, type: "Rau củ 4", img: "/product__1.webp" },
-    { id: 10, name: "Sản phẩm 10", price: 25, type: "Trái cây", img: "/product__2.webp" },
-    { id: 11, name: "Sản phẩm 11", price: 20, type: "Trái cây", img: "/product__1.webp" },
-    { id: 12, name: "Sản phẩm 12", price: 25, type: "Rau củ", img: "/product__2.webp" },
-    { id: 13, name: "Sản phẩm 13", price: 25, type: "Rau củ 2", img: "/product__3.webp" },
-    { id: 14, name: "Sản phẩm 14", price: 25, type: "Rau củ 3", img: "/product__4.webp" },
-    { id: 15, name: "Sản phẩm 15", price: 25, type: "Rau củ 4", img: "/product__1.webp" },
-    { id: 16, name: "Sản phẩm 16", price: 25, type: "Trái cây", img: "/product__2.webp" },
-    { id: 17, name: "Sản phẩm 17", price: 25, type: "Rau củ 2", img: "/product__3.webp" },
-    { id: 18, name: "Sản phẩm 18", price: 25, type: "Rau củ 3", img: "/product__4.webp" },
-    { id: 19, name: "Sản phẩm 19", price: 25, type: "Rau củ 4", img: "/product__1.webp" },
-    { id: 20, name: "Sản phẩm 20", price: 25, type: "Trái cây", img: "/product__2.webp" },
-    // Add more mock products here as needed
-];
+interface Media {
+    mediaId: number;
+    fileUrl: string;
+    fileType: string;
+    fileSize: number;
+    uploadedAt: string;
+}
+
+interface Product {
+    productId: number;
+    categoryId: number;
+    categoryName: string;
+    productName: string;
+    description: string;
+    status: string;
+    createdAt: string;
+    medias: Media[];
+}
 
 const ProductList = () => {
-    const { id } = useParams();
-    const [products, setProducts] = useState(mockProducts);
+    const { id } = useParams<{ id: string }>();
+    const [products, setProducts] = useState<Product[]>([]);
     const [search, setSearch] = useState('');
     const [filterType, setFilterType] = useState('');
     const [sortOrder, setSortOrder] = useState('newest');
@@ -37,8 +33,28 @@ const ProductList = () => {
     const itemsPerPage = 8;
 
     useEffect(() => {
-        setProducts(mockProducts);
-    }, [id]);
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/products', {
+                    params: {
+                        sort: sortOrder === 'newest' ? 'desc' : 'asc',
+                        page: 0,
+                        size: 300,
+                        categoryId: undefined,
+                    },
+                    headers: {
+                        accept: 'application/json'
+                    }
+                });
+                console.log(response.data.content);
+                setProducts(response.data.content);
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+            }
+        };
+
+        fetchProducts();
+    }, [id, sortOrder, currentPage]);
 
     const handleSortOrder = (order: string) => {
         setSortOrder(order);
@@ -46,20 +62,14 @@ const ProductList = () => {
     };
 
     const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(search.toLowerCase()) &&
-        (filterType ? product.type === filterType : true)
-    ).sort((a, b) => {
-        if (sortOrder === 'newest') {
-            return b.id - a.id;
-        } else {
-            return a.id - b.id;
-        }
-    });
+        product.productName.toLowerCase().includes(search.toLowerCase()) &&
+        (filterType ? product.categoryName === filterType : true)
+    );
 
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
     const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-    const productTypes = [...new Set(products.map(product => product.type))];
+    const productTypes = [...new Set(products.map(product => product.categoryName))];
 
     const handleFilterType = (type: string) => {
         setFilterType(type);
@@ -120,7 +130,7 @@ const ProductList = () => {
                 </div>
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {paginatedProducts.map(product => (
-                        <ProductCard key={product.id} img={product.img} name={product.name} price={product.price.toString()} id={product.id} />
+                        <ProductCard key={product.productId} img={product.medias.length > 0 ? 'http://localhost:8080/api/images/'+product.medias[0].fileUrl : ''} name={product.productName} price="Unknown" id={product.productId} />
                     ))}
                 </div>
                 <div className="flex justify-center mt-8">

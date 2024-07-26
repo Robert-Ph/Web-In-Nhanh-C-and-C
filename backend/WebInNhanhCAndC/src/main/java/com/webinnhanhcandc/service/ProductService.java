@@ -2,8 +2,10 @@ package com.webinnhanhcandc.service;
 
 import com.webinnhanhcandc.dto.MediaDTO1;
 import com.webinnhanhcandc.dto.ProductDTO1;
+import com.webinnhanhcandc.entity.Category;
 import com.webinnhanhcandc.entity.Media;
 import com.webinnhanhcandc.entity.Product;
+import com.webinnhanhcandc.repository.CategoryRepository;
 import com.webinnhanhcandc.repository.MediaRepository;
 import com.webinnhanhcandc.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class ProductService {
 
     @Autowired
     private MediaRepository mediaRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository; // Thêm CategoryRepository
 
     public Page<ProductDTO1> getAllProductsSortedByCreatedAt(String sortDirection, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
@@ -67,6 +72,12 @@ public class ProductService {
         // Lấy danh sách ảnh sản phẩm
         List<Media> medias = mediaRepository.findByProductId(product.getProductId());
         productDTO.setMedias(medias.stream().map(this::convertMediaToDTO).collect(Collectors.toList()));
+
+        // Lấy tên danh mục
+        if (product.getCategoryId() != null) {
+            Optional<Category> categoryOptional = categoryRepository.findById(product.getCategoryId());
+            categoryOptional.ifPresent(category -> productDTO.setCategoryName(category.getCategoryName()));
+        }
 
         return productDTO;
     }
