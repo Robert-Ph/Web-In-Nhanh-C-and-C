@@ -4,7 +4,7 @@
 const Hero = () => {
     return (
         <div className="container pt-6" style={{ width: '100%', height: '100%' }}>
-            <div className="grid xl:grid-cols-3 gap-8" style={{ width: '100%', height: '100%' }}>
+            <div className="grid xl:grid-cols-3 gap-3" style={{ width: '100%', height: '100%' }}>
                 <div className="relative xl:col-span-2" style={{ width: '100%', height: '60vh' }}>
                     <img
                         style={{ width: '100%', height: '100%' }}
@@ -30,8 +30,8 @@ const Hero = () => {
                     {/*</div>*/}
                 </div>
 
-                <div className="space-y-8">
-                    <div className="relative" style={{ width: '100%', height: '28.1vh', paddingRight: '0px' }}>
+                <div className="space-y-3">
+                    <div className="relative" style={{ width: '100%', height: '29.1vh', paddingRight: '0px' }}>
                         <img
                             style={{ width: '100%', height: '100%' }}
                             className="object-cover rounded-lg"
@@ -53,7 +53,7 @@ const Hero = () => {
                         {/*</div>*/}
                     </div>
 
-                    <div className="relative" style={{ width: '100%', height: '28.1vh' }}>
+                    <div className="relative" style={{ width: '100%', height: '29.5vh' }}>
                         <img
                             style={{ width: '100%', height: '100%' }}
                             className="object-cover rounded-lg"
