@@ -48,7 +48,7 @@ const ProductList = () => {
     const [sortOrder, setSortOrder] = useState('newest');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const itemsPerPage = 8;
+    const itemsPerPage = 12;
 
     const updateURLParams = (params: URLParams) => {
         const queryParams = new URLSearchParams(location.search);
@@ -90,7 +90,7 @@ const ProductList = () => {
         try {
             const response = await axios.get('http://localhost:8080/api/products', {
                 params: {
-                    sort: sort || 'desc',
+                    sort: 'newest',
                     page: page ? Number(page) - 1 : 0,
                     size: itemsPerPage,
                     categoryId: categoryId ? Number(categoryId) : undefined,
@@ -142,55 +142,42 @@ const ProductList = () => {
     };
 
     return (
-        <div className="container mx-auto py-16 px-4 flex">
-            <aside className="w-1/4 pr-4">
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        placeholder="Tìm kiếm..."
-                        value={search}
-                        onChange={(e) => handleSearch(e.target.value)}
-                        className="border p-2 w-full bg-gray-100 rounded-lg"
-                    />
-                </div>
-                <div className="mb-4">
-                    <h3 className="font-medium text-xl mb-2 text-gray-700">Lọc theo loại</h3>
-                    <div className="flex flex-wrap gap-2">
-                        <button
-                            onClick={() => handleCategorySelect(null)}
-                            className={`p-2 rounded-lg transition-colors duration-300 ${selectedCategoryId === null ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-                        >
-                            Tất cả
-                        </button>
-                        {categories.map(category => (
-                            <button
-                                key={category.category_id}
-                                onClick={() => handleCategorySelect(category.category_id)}
-                                className={`p-2 rounded-lg transition-colors duration-300 ${selectedCategoryId === category.category_id ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-                            >
-                                {category.categoryName}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-                <Banner img="/hero__1.webp" alt="Banner 1" link="https://example.com/banner1" width="100%" height="200px" />
-                <Banner img="/hero__2.webp" alt="Banner 2" link="https://example.com/banner2" width="100%" height="200px" />
-            </aside>
-            <main className="w-3/4">
-                <div className="flex justify-between items-center mb-4">
-                    <div className="flex flex-wrap gap-2">
-                        <label className="font-medium text-xl text-gray-700">Sắp xếp theo: </label>
-                        <select
-                            value={sortOrder}
-                            onChange={(e) => handleSortOrder(e.target.value)}
-                            className="border p-2 bg-gray-100 rounded-lg"
-                        >
-                            <option value="newest">Mới nhất</option>
-                            <option value="oldest">Cũ nhất</option>
-                        </select>
-                    </div>
-                </div>
-                <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="container mx-auto py-16 px-4 flex justify-center" style={{ backgroundColor: '#f7f5f5' }}>
+            {/*<aside className="w-1/4 pr-4">*/}
+            {/*    <div className="mb-4">*/}
+            {/*        <input*/}
+            {/*            type="text"*/}
+            {/*            placeholder="Tìm kiếm..."*/}
+            {/*            value={search}*/}
+            {/*            onChange={(e) => handleSearch(e.target.value)}*/}
+            {/*            className="border p-2 w-full bg-gray-100 rounded-lg"*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*    <div className="mb-4">*/}
+            {/*        <h3 className="font-medium text-xl mb-2 text-gray-700">Lọc theo loại</h3>*/}
+            {/*        <div className="flex flex-wrap gap-2">*/}
+            {/*            <button*/}
+            {/*                onClick={() => handleCategorySelect(null)}*/}
+            {/*                className={`p-2 rounded-lg transition-colors duration-300 ${selectedCategoryId === null ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}*/}
+            {/*            >*/}
+            {/*                Tất cả*/}
+            {/*            </button>*/}
+            {/*            {categories.map(category => (*/}
+            {/*                <button*/}
+            {/*                    key={category.category_id}*/}
+            {/*                    onClick={() => handleCategorySelect(category.category_id)}*/}
+            {/*                    className={`p-2 rounded-lg transition-colors duration-300 ${selectedCategoryId === category.category_id ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}*/}
+            {/*                >*/}
+            {/*                    {category.categoryName}*/}
+            {/*                </button>*/}
+            {/*            ))}*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*    <Banner img="/hero__1.webp" alt="Banner 1" link="https://example.com/banner1" width="100%" height="200px" />*/}
+            {/*    <Banner img="/hero__2.webp" alt="Banner 2" link="https://example.com/banner2" width="100%" height="200px" />*/}
+            {/*</aside>*/}
+            <main className="w-full h-full" style={{marginRight:'22vh', marginLeft:'22vh'}}>
+                <div className="grid lg:grid-cols-4 gap-4">
                     {products.map(product => (
                         <ProductCard key={product.productId} img={product.medias.length > 0 ? 'http://localhost:8080/api/images/' + product.medias[0].fileUrl : ''} name={product.productName} price="Unknown" id={product.productId} />
                     ))}

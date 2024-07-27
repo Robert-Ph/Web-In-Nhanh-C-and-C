@@ -9,7 +9,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [theme, setTheme] = useState<Record<string, string>>({
-        navbarBackground: '#f94c2f',
+        navbarBackground: 'orange',
         // Add other default colors here
     });
 

@@ -1,7 +1,8 @@
+// user/web-in-nhanh-c-and-c/src/components/BannerSection.tsx
 const BannerSection = () => {
     return (
         <div className="container pt-16">
-            <div className="grid sm:grid-cols-2 gap-4 sm:gap-8">
+            <div className="flex justify-center gap-4 sm:gap-8">
                 <div className="overflow-hidden rounded-lg">
                     <img
                         className="hover:scale-105 transition-transform"

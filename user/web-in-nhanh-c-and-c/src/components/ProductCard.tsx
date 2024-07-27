@@ -18,7 +18,7 @@ const ProductCard: React.FC<PropsType> = ({ id, img, name }) => {
 
     return (
         <div
-            className="border border-gray-200 hover:border-gray-300 hover:scale-105 transition-transform rounded-lg relative bg-gray-100"
+            className="border border-gray-200 hover:border-gray-300 hover:scale-105 transition-transform rounded-lg relative bg-white" style={{marginBottom:'4vh'}}
             onClick={navigateToDetail}>
             <img src={img} alt={name} className="w-full h-auto rounded-t-lg" style={{height:'35vh'}} />
             <div className="space-y-2 relative p-4">
@@ -29,7 +29,7 @@ const ProductCard: React.FC<PropsType> = ({ id, img, name }) => {
                     <AiFillStar />
                     <AiOutlineStar />
                 </div>
-                <h3 className="font-medium">{name}</h3>
+                <h1 className="" style={{fontWeight:'bold', fontSize:'18px'}}>{name}</h1>
                 {/*<h3 className="text-2xl font-medium text-red-600">{price}</h3>*/}
                 <div
                     className="absolute -top-4 right-2 bg-accent text-white text-[28px] w-[50px] h-[50px] rounded-full grid place-items-center cursor-pointer">
