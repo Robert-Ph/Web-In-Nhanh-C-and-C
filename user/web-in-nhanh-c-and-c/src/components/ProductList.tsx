@@ -1,6 +1,5 @@
-// user/web-in-nhanh-c-and-c/src/components/ProductList.tsx
-import {useState, useEffect} from 'react';
-import {useParams, useNavigate, useLocation} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import ProductCard from './ProductCard';
 import Banner from './Banner';
 import axios from 'axios';
@@ -39,7 +38,7 @@ interface URLParams {
 }
 
 const ProductList = () => {
-    const {id} = useParams<{ id: string }>();
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const location = useLocation();
     const [products, setProducts] = useState<Product[]>([]);
@@ -61,7 +60,7 @@ const ProductList = () => {
                 queryParams.delete(key);
             }
         });
-        navigate({search: queryParams.toString()});
+        navigate({ search: queryParams.toString() });
     };
 
     useEffect(() => {
@@ -109,30 +108,37 @@ const ProductList = () => {
     };
 
     useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const categoryId = queryParams.get('categoryId');
+        if (categoryId) {
+            setSelectedCategoryId(Number(categoryId));
+        } else {
+            setSelectedCategoryId(null);
+        }
         fetchProducts();
     }, [location.search]);
 
     const handleSortOrder = (order: string) => {
         setSortOrder(order);
         setCurrentPage(1);
-        updateURLParams({sort: order, page: 1});
+        updateURLParams({ sort: order, page: 1 });
     };
 
     const handleCategorySelect = (categoryId: number | null) => {
         setSelectedCategoryId(categoryId);
         setCurrentPage(1);
-        updateURLParams({categoryId: categoryId || undefined, page: 1});
+        updateURLParams({ categoryId: categoryId || undefined, page: 1 });
     };
 
     const handleSearch = (value: string) => {
         setSearch(value);
         setCurrentPage(1);
-        updateURLParams({search: value, page: 1});
+        updateURLParams({ search: value, page: 1 });
     };
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
-        updateURLParams({page});
+        updateURLParams({ page });
     };
 
     return (
@@ -167,10 +173,8 @@ const ProductList = () => {
                         ))}
                     </div>
                 </div>
-                <Banner img="/hero__1.webp" alt="Banner 1" link="https://example.com/banner1" width="100%"
-                        height="200px"/>
-                <Banner img="/hero__2.webp" alt="Banner 2" link="https://example.com/banner2" width="100%"
-                        height="200px"/>
+                <Banner img="/hero__1.webp" alt="Banner 1" link="https://example.com/banner1" width="100%" height="200px" />
+                <Banner img="/hero__2.webp" alt="Banner 2" link="https://example.com/banner2" width="100%" height="200px" />
             </aside>
             <main className="w-3/4">
                 <div className="flex justify-between items-center mb-4">
@@ -188,13 +192,11 @@ const ProductList = () => {
                 </div>
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {products.map(product => (
-                        <ProductCard key={product.productId}
-                                     img={product.medias.length > 0 ? 'http://localhost:8080/api/images/' + product.medias[0].fileUrl : ''}
-                                     name={product.productName} price="Unknown" id={product.productId}/>
+                        <ProductCard key={product.productId} img={product.medias.length > 0 ? 'http://localhost:8080/api/images/' + product.medias[0].fileUrl : ''} name={product.productName} price="Unknown" id={product.productId} />
                     ))}
                 </div>
                 <div className="flex justify-center mt-8">
-                    {Array.from({length: totalPages}, (_, index) => (
+                    {Array.from({ length: totalPages }, (_, index) => (
                         <button
                             key={index}
                             onClick={() => handlePageChange(index + 1)}

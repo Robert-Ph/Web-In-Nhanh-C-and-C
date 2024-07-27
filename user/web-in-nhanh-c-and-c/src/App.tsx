@@ -31,7 +31,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={
                         <main>
-                            <div className="relative z-10">
+                            <div className="relative z-10" style={{ width: '100%', height: '60vh' }}>
                                 <Hero/>
                             </div>
                             <Category/>
