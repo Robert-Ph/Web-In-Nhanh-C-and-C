@@ -1,9 +1,15 @@
 package com.webinnhanhcandc.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "settings")
 public class Settings {
@@ -28,40 +34,6 @@ public class Settings {
         this.settingId = settingId;
         this.settingName = settingName;
         this.settingValue = settingValue;
-        this.lastUpdated = lastUpdated;
-    }
-
-    // Getters and Setters
-
-    public int getSettingId() {
-        return settingId;
-    }
-
-    public void setSettingId(int settingId) {
-        this.settingId = settingId;
-    }
-
-    public String getSettingName() {
-        return settingName;
-    }
-
-    public void setSettingName(String settingName) {
-        this.settingName = settingName;
-    }
-
-    public String getSettingValue() {
-        return settingValue;
-    }
-
-    public void setSettingValue(String settingValue) {
-        this.settingValue = settingValue;
-    }
-
-    public Timestamp getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(Timestamp lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 }

@@ -2,10 +2,10 @@
 import ProductCard from "./ProductCard";
 
 const data = [
-    { id: 0, img: "product__5.webp", name: "Fresh Tomato", price: "" },
-    { id: 1, img: "product__2.webp", name: "Crunchy Crisps", price: "" },
-    { id: 2, img: "product__3.webp", name: "Jewel Cranberries", price: "" },
-    { id: 3, img: "product__4.webp", name: "Almond Organic", price: "" },
+    {id: 0, img: "product__5.webp", name: "Fresh Tomato", price: ""},
+    {id: 1, img: "product__2.webp", name: "Crunchy Crisps", price: ""},
+    {id: 2, img: "product__3.webp", name: "Jewel Cranberries", price: ""},
+    {id: 3, img: "product__4.webp", name: "Almond Organic", price: ""},
 ];
 
 const FeatureSectionBreakfast = () => {
@@ -27,7 +27,7 @@ const FeatureSectionBreakfast = () => {
 
             <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 pt-8 gap-2">
                 <div>
-                    <img className="w-full h-full object-cover" src="/feature__2.webp" alt="banner" />
+                    <img className="w-full h-full object-cover" src="/feature__2.webp" alt="banner"/>
                 </div>
                 {data.map(el => (
                     <ProductCard
@@ -35,7 +35,7 @@ const FeatureSectionBreakfast = () => {
                         img={el.img}
                         name={el.name}
                         price={el.price}
-                    />
+                        id={0}/>
                 ))}
             </div>
         </div>

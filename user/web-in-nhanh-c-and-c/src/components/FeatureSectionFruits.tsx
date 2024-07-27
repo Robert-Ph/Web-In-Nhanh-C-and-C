@@ -10,7 +10,7 @@ const data = [
 
 const FeatureSectionFruits = () => {
     return (
-        <div className="container pt-16">
+        <div className="container pt-5">
             <div className="lg:flex justify-between items-center">
                 <div>
                     <h3 className="font-medium text-2xl">Fruits & Vegetables</h3>

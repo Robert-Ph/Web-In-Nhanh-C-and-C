@@ -31,7 +31,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={
                         <main>
-                            <div className="relative z-10">
+                            <div className="relative z-10" style={{ width: '100%', height: '60vh' }}>
                                 <Hero/>
                             </div>
                             <Category/>
@@ -62,7 +62,7 @@ const App = () => {
                     <Route path="/forgotpass" element={<ForgotPass />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/category/:id" element={<ProductList />} />
+                    <Route path="/products" element={<ProductList />} />
                 </Routes>
                 <Footer/>
             </Router>

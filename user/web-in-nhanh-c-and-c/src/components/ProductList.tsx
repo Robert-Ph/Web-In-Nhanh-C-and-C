@@ -1,69 +1,144 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import ProductCard from './ProductCard';
 import Banner from './Banner';
+import axios from 'axios';
 
-const mockProducts = [
-    { id: 1, name: "Sản phẩm 1", price: 20, type: "Trái cây", img: "/product__1.webp" },
-    { id: 2, name: "Sản phẩm 2", price: 25, type: "Rau củ", img: "/product__2.webp" },
-    { id: 3, name: "Sản phẩm 3", price: 25, type: "Rau củ 2", img: "/product__3.webp" },
-    { id: 4, name: "Sản phẩm 4", price: 25, type: "Rau củ 3", img: "/product__4.webp" },
-    { id: 5, name: "Sản phẩm 5", price: 25, type: "Rau củ 4", img: "/product__1.webp" },
-    { id: 6, name: "Sản phẩm 6", price: 25, type: "Trái cây", img: "/product__2.webp" },
-    { id: 7, name: "Sản phẩm 7", price: 25, type: "Rau củ 2", img: "/product__3.webp" },
-    { id: 8, name: "Sản phẩm 8", price: 25, type: "Rau củ 3", img: "/product__4.webp" },
-    { id: 9, name: "Sản phẩm 9", price: 25, type: "Rau củ 4", img: "/product__1.webp" },
-    { id: 10, name: "Sản phẩm 10", price: 25, type: "Trái cây", img: "/product__2.webp" },
-    { id: 11, name: "Sản phẩm 11", price: 20, type: "Trái cây", img: "/product__1.webp" },
-    { id: 12, name: "Sản phẩm 12", price: 25, type: "Rau củ", img: "/product__2.webp" },
-    { id: 13, name: "Sản phẩm 13", price: 25, type: "Rau củ 2", img: "/product__3.webp" },
-    { id: 14, name: "Sản phẩm 14", price: 25, type: "Rau củ 3", img: "/product__4.webp" },
-    { id: 15, name: "Sản phẩm 15", price: 25, type: "Rau củ 4", img: "/product__1.webp" },
-    { id: 16, name: "Sản phẩm 16", price: 25, type: "Trái cây", img: "/product__2.webp" },
-    { id: 17, name: "Sản phẩm 17", price: 25, type: "Rau củ 2", img: "/product__3.webp" },
-    { id: 18, name: "Sản phẩm 18", price: 25, type: "Rau củ 3", img: "/product__4.webp" },
-    { id: 19, name: "Sản phẩm 19", price: 25, type: "Rau củ 4", img: "/product__1.webp" },
-    { id: 20, name: "Sản phẩm 20", price: 25, type: "Trái cây", img: "/product__2.webp" },
-    // Add more mock products here as needed
-];
+interface Media {
+    mediaId: number;
+    fileUrl: string;
+    fileType: string;
+    fileSize: number;
+    uploadedAt: string;
+}
+
+interface Product {
+    productId: number;
+    categoryId: number;
+    categoryName: string;
+    productName: string;
+    description: string;
+    status: string;
+    createdAt: string;
+    medias: Media[];
+}
+
+interface Category {
+    category_id: number;
+    categoryName: string;
+    description: string;
+    parentId: number | null;
+}
+
+interface URLParams {
+    sort?: string;
+    page?: number;
+    categoryId?: number;
+    search?: string;
+}
 
 const ProductList = () => {
-    const { id } = useParams();
-    const [products, setProducts] = useState(mockProducts);
+    const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [products, setProducts] = useState<Product[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
     const [search, setSearch] = useState('');
-    const [filterType, setFilterType] = useState('');
     const [sortOrder, setSortOrder] = useState('newest');
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 8;
 
+    const updateURLParams = (params: URLParams) => {
+        const queryParams = new URLSearchParams(location.search);
+        Object.keys(params).forEach(key => {
+            const value = params[key as keyof URLParams];
+            if (value !== null && value !== undefined) {
+                queryParams.set(key, value.toString());
+            } else {
+                queryParams.delete(key);
+            }
+        });
+        navigate({ search: queryParams.toString() });
+    };
+
     useEffect(() => {
-        setProducts(mockProducts);
-    }, [id]);
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/categories', {
+                    headers: {
+                        accept: 'application/json'
+                    }
+                });
+                setCategories(response.data);
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách loại sản phẩm:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    const fetchProducts = async () => {
+        const queryParams = new URLSearchParams(location.search);
+        const categoryId = queryParams.get('categoryId');
+        const page = queryParams.get('page');
+        const sort = queryParams.get('sort');
+        const search = queryParams.get('search');
+
+        try {
+            const response = await axios.get('http://localhost:8080/api/products', {
+                params: {
+                    sort: sort || 'desc',
+                    page: page ? Number(page) - 1 : 0,
+                    size: itemsPerPage,
+                    categoryId: categoryId ? Number(categoryId) : undefined,
+                    productName: search || undefined,
+                },
+                headers: {
+                    accept: 'application/json'
+                }
+            });
+            setProducts(response.data.content);
+            setTotalPages(response.data.totalPages);
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+        }
+    };
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const categoryId = queryParams.get('categoryId');
+        if (categoryId) {
+            setSelectedCategoryId(Number(categoryId));
+        } else {
+            setSelectedCategoryId(null);
+        }
+        fetchProducts();
+    }, [location.search]);
 
     const handleSortOrder = (order: string) => {
         setSortOrder(order);
-        setCurrentPage(1); // Reset to first page when sort order changes
+        setCurrentPage(1);
+        updateURLParams({ sort: order, page: 1 });
     };
 
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(search.toLowerCase()) &&
-        (filterType ? product.type === filterType : true)
-    ).sort((a, b) => {
-        if (sortOrder === 'newest') {
-            return b.id - a.id;
-        } else {
-            return a.id - b.id;
-        }
-    });
+    const handleCategorySelect = (categoryId: number | null) => {
+        setSelectedCategoryId(categoryId);
+        setCurrentPage(1);
+        updateURLParams({ categoryId: categoryId || undefined, page: 1 });
+    };
 
-    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-    const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const handleSearch = (value: string) => {
+        setSearch(value);
+        setCurrentPage(1);
+        updateURLParams({ search: value, page: 1 });
+    };
 
-    const productTypes = [...new Set(products.map(product => product.type))];
-
-    const handleFilterType = (type: string) => {
-        setFilterType(type);
-        setCurrentPage(1); // Reset to first page when filter changes
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        updateURLParams({ page });
     };
 
     return (
@@ -74,10 +149,7 @@ const ProductList = () => {
                         type="text"
                         placeholder="Tìm kiếm..."
                         value={search}
-                        onChange={(e) => {
-                            setSearch(e.target.value);
-                            setCurrentPage(1); // Reset to first page when search changes
-                        }}
+                        onChange={(e) => handleSearch(e.target.value)}
                         className="border p-2 w-full bg-gray-100 rounded-lg"
                     />
                 </div>
@@ -85,18 +157,18 @@ const ProductList = () => {
                     <h3 className="font-medium text-xl mb-2 text-gray-700">Lọc theo loại</h3>
                     <div className="flex flex-wrap gap-2">
                         <button
-                            onClick={() => handleFilterType('')}
-                            className={`p-2 rounded-lg transition-colors duration-300 ${filterType === '' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                            onClick={() => handleCategorySelect(null)}
+                            className={`p-2 rounded-lg transition-colors duration-300 ${selectedCategoryId === null ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                         >
                             Tất cả
                         </button>
-                        {productTypes.map(type => (
+                        {categories.map(category => (
                             <button
-                                key={type}
-                                onClick={() => handleFilterType(type)}
-                                className={`p-2 rounded-lg transition-colors duration-300 ${filterType === type ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                key={category.category_id}
+                                onClick={() => handleCategorySelect(category.category_id)}
+                                className={`p-2 rounded-lg transition-colors duration-300 ${selectedCategoryId === category.category_id ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                             >
-                                {type}
+                                {category.categoryName}
                             </button>
                         ))}
                     </div>
@@ -119,15 +191,15 @@ const ProductList = () => {
                     </div>
                 </div>
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {paginatedProducts.map(product => (
-                        <ProductCard key={product.id} img={product.img} name={product.name} price={product.price.toString()} id={product.id} />
+                    {products.map(product => (
+                        <ProductCard key={product.productId} img={product.medias.length > 0 ? 'http://localhost:8080/api/images/' + product.medias[0].fileUrl : ''} name={product.productName} price="Unknown" id={product.productId} />
                     ))}
                 </div>
                 <div className="flex justify-center mt-8">
                     {Array.from({ length: totalPages }, (_, index) => (
                         <button
                             key={index}
-                            onClick={() => setCurrentPage(index + 1)}
+                            onClick={() => handlePageChange(index + 1)}
                             className={`px-4 py-2 border rounded-lg mx-1 transition-colors duration-300 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                         >
                             {index + 1}
