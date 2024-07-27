@@ -1,36 +1,30 @@
-import {
-    LiaShippingFastSolid,
-    LiaMoneyBillWaveSolid,
-    LiaGiftSolid,
-} from "react-icons/lia";
-import { FiPhoneCall } from "react-icons/fi";
-import FeatureCard from "./FeatureCard.tsx";
+// src/components/FeatureSection.tsx
+import React from 'react';
+import ProductCard from './ProductCard';
 
-const data = [
-    {
-        title: "Free Shipping",
-        icon: <LiaShippingFastSolid />,
-    },
-    {
-        title: "Best Price Guarantee",
-        icon: <LiaMoneyBillWaveSolid />,
-    },
-    {
-        title: "Free Curbside Pickup",
-        icon: <LiaGiftSolid />,
-    },
-    {
-        title: "Support 24/7",
-        icon: <FiPhoneCall />,
-    },
-];
+interface FeatureSectionProps {
+    title: string;
+    data: Array<{ id: number, img: string, name: string, price: string }>;
+}
 
-const FeatureSection = () => {
+const FeatureSection: React.FC<FeatureSectionProps> = ({ title, data }) => {
     return (
-        <div className="container pt-16">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {data.map((el) => (
-                    <FeatureCard key={el.title} title={el.title} icon={el.icon} />
+        <div className="container pt-20 bg-gray-100">
+            <div className="lg:flex justify-between items-center">
+                <div>
+                    <h3 className="font-medium text-2xl">{title}</h3>
+                </div>
+            </div>
+
+            <div className="flex flex-wrap justify-center pt-8">
+                {data.map(el => (
+                    <div key={el.id} className="w-1/2 md:w-1/4 pl-5 pr-5">
+                        <ProductCard
+                            img={el.img}
+                            name={el.name}
+                            price={el.price}
+                            id={el.id}/>
+                    </div>
                 ))}
             </div>
         </div>
