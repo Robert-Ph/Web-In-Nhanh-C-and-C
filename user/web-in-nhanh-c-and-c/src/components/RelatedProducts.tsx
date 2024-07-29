@@ -9,13 +9,12 @@ const RelatedProducts = () => {
         { id: 3, img: "/product__1.webp", name: "Dried Mango", price: "" },
         { id: 4, img: "/product__1.webp", name: "Dried Mango", price: "" },
         { id: 5, img: "/product__1.webp", name: "Dried Mango", price: "" },
-        { id: 6, img: "/product__1.webp", name: "Dried Mango", price: "" },
     ];
 
     return (
-        <div className="container mx-auto py-16">
-            <h2 className="text-2xl font-bold mb-8">Các sản phẩn tương tự</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        <div className="container mx-auto py-16" style={{paddingLeft:'10vh', paddingRight:'10vh'}}>
+            <h2 className="text-2xl font-bold mb-8 text-center">Các sản phẩn tương tự</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
                 {data.map((product) => (
                     <ProductCard
                         key={product.id}

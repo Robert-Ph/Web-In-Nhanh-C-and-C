@@ -3,7 +3,7 @@
 
 const Hero = () => {
     return (
-        <div className="container pt-6" style={{ width: '100%', height: '100%' }}>
+        <div className="container" style={{ width: '100%', height: '100%' }}>
             <div className="grid xl:grid-cols-3 gap-3" style={{ width: '100%', height: '100%' }}>
                 <div className="relative xl:col-span-2" style={{ width: '100%', height: '60vh' }}>
                     <img
