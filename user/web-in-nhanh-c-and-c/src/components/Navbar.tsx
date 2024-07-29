@@ -204,10 +204,12 @@ const Navbar = () => {
                             <AiOutlinePhone className="text-2xl mr-2" />
                             <span>1800.2097</span>
                         </div>
-                        <div className="relative flex items-center bg-white bg-opacity-20 p-2 rounded-lg cursor-pointer" style={{ color: '#00359c' }}>
-                            <FiPackage className="text-2xl mr-2" />
-                            <span>Tra cứu đơn hàng</span>
-                        </div>
+                        <Link to="/order-history">
+                            <div className="relative flex items-center bg-white bg-opacity-20 p-2 rounded-lg cursor-pointer" style={{ color: '#00359c' }}>
+                                <FiPackage className="text-2xl mr-2" />
+                                <span>Lịch sử đơn hàng</span>
+                            </div>
+                        </Link>
                         <div className="relative flex items-center text-white cursor-pointer" onClick={toggleLanguageDropdown}>
                             <ReactCountryFlag
                                 countryCode={selectedLanguage}

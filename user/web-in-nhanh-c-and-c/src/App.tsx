@@ -19,6 +19,7 @@ import Breadcrumb from "./components/Breadcrumb";
 import ProductList from "./components/ProductList.tsx";
 import ScrollToTop from './components/ScrollToTop';
 import FeatureSectionInfoShop from "./components/FeatureSectionInfoShop.tsx";
+import OrderHistory from "./components/OrderHistory.tsx";
 
 const App = () => {
     return (
@@ -61,6 +62,8 @@ const App = () => {
                     <Route path="/cart" element={<Cart/>}/>
                     <Route path="/checkout" element={<Checkout/>}/>
                     <Route path="/products" element={<ProductList/>}/>
+                    <Route path="/order-history" element={<OrderHistory />} />
+
                 </Routes>
                 <Footer/>
             </Router>

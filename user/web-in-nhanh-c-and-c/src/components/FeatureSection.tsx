@@ -7,9 +7,9 @@ interface FeatureSectionProps {
     data: Array<{ id: number, img: string, name: string, price: string }>;
 }
 
-const FeatureSection: React.FC<FeatureSectionProps> = ({ title, data }) => {
+const FeatureSection: React.FC<FeatureSectionProps> = ({title, data}) => {
     return (
-        <div className="container pt-20 bg-gray-100">
+        <div className="container pt-20 bg-gray-100" style={{paddingRight: '7.5rem', paddingLeft: '7.5rem'}}>
             <div className="lg:flex justify-between items-center">
                 <div>
                     <h3 className="font-medium text-2xl">{title}</h3>

@@ -5,7 +5,7 @@ const Breadcrumb = () => {
     const pathnames = location.pathname.split('/').filter(x => x);
 
     return (
-        <nav className="flex items-center py-4 pl-20 bg-gray-100 rounded-md shadow-sm">
+        <nav className="flex items-center py-4 pl-20 bg-gray-100 rounded-md shadow-sm mt-28">
             <Link to="/" className="text-blue-600 hover:underline">home</Link>
             {pathnames.map((value, index) => {
                 const to = `/${pathnames.slice(0, index + 1).join('/')}`;
