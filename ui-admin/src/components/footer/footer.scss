@@ -1,0 +1,20 @@
+@import "../../styles/variables.scss";
+
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $main-bg;
+
+  span{
+    &:first-child{
+      font-weight: bold;
+    }
+    &:last-child{
+      font-size: 14px;
+    }
+    &:hover{
+      background-color: #747bff;
+    }
+  }
+}
