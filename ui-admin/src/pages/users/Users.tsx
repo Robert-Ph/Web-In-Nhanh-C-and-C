@@ -5,7 +5,7 @@ import ItemUser from "../../components/itemUser/ItemUser.tsx";
 const Users = () =>{
     return (
         <div className="users">
-            <h1>Users</h1>
+            <h1>Accounts</h1>
 
 
             <button className="add">Thêm Mới</button>

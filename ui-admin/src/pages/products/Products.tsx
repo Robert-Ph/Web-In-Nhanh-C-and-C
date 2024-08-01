@@ -1,7 +1,7 @@
 // ui-admin/src/pages/products/Products.tsx
 import "./products.scss";
-import { useState } from "react";
-import { products } from "../../data.ts";
+import {useState} from "react";
+import {products} from "../../data.ts";
 import {
     Container,
     Grid,
@@ -9,7 +9,6 @@ import {
     CardContent,
     CardMedia,
     Typography,
-    Button,
     IconButton,
     Box,
     Paper,
@@ -18,11 +17,12 @@ import {
     ListItemText,
     Pagination,
 } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
+import {Edit, Delete} from "@mui/icons-material";
+import {Link} from "react-router-dom";
 
 interface Product {
     id: number;
-    img: string;
+    imgs: string[];
     title: string;
     category: string;
     color: string;
@@ -44,6 +44,13 @@ const Products = () => {
 
     const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
         setCurrentPage(page);
+    };
+
+    const truncate = (str: string, maxLength: number) => {
+        if (str.length <= maxLength) {
+            return str;
+        }
+        return str.slice(0, maxLength) + '...';
     };
 
     const filteredProducts = selectedCategory === "Tất cả"
@@ -79,50 +86,38 @@ const Products = () => {
                                         onClick={() => handleCategoryChange(category)}
                                         key={category}
                                     >
-                                        <ListItemText primary={category} />
+                                        <ListItemText primary={category}/>
                                     </ListItem>
                                 ))}
                             </List>
                         </Paper>
-                        <Box mt={2}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                fullWidth
-                                onClick={() => handleCategoryChange("Tất cả")}
-                            >
-                                Reset
-                            </Button>
-                        </Box>
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={10}>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3} className="product-list">
                         {paginatedProducts.map((product: Product) => (
                             <Grid item xs={12} sm={6} md={3} key={product.id}>
-                                <Card>
+                                <Card className="product-card">
                                     <CardMedia
+                                        height={200}
                                         component="img"
                                         alt={product.title}
-                                        height="140"
-                                        image={product.img}
+                                        image={product.imgs[0]}
                                     />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            {product.title}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            Loại sản phẩm: {product.category}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {product.price}
+                                    <CardContent className="product-info">
+                                        <Typography gutterBottom variant="h5" component="div" height={90}>
+                                            {truncate(product.title, 30)}
                                         </Typography>
                                         <Box mt={2} display="flex" justifyContent="space-between">
-                                            <IconButton color="primary">
-                                                <Edit />
+                                            <IconButton
+                                                color="primary"
+                                                component={Link}
+                                                to={`/products/edit/${product.id}`}
+                                            >
+                                                <Edit/>
                                             </IconButton>
                                             <IconButton color="secondary">
-                                                <Delete />
+                                                <Delete/>
                                             </IconButton>
                                         </Box>
                                     </CardContent>

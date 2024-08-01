@@ -1,0 +1,24 @@
+// ui-admin/src/pages/orders/orderDetail.scss
+.order-detail {
+  padding: 20px;
+
+  .MuiCard-root {
+    margin-bottom: 20px;
+  }
+
+  .MuiTypography-body1 {
+    margin-bottom: 10px;
+  }
+
+  .MuiTableCell-root {
+    padding: 10px;
+  }
+
+  .MuiCardMedia-root {
+    width: 100px;
+  }
+
+  .MuiButton-root {
+    text-transform: none;
+  }
+}

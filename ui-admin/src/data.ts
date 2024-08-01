@@ -2,8 +2,18 @@
 export const products = [
   {
     id: 1,
-    img: "https://store.sony.com.au/on/demandware.static/-/Sites-sony-master-catalog/default/dw1b537bbb/images/PLAYSTATION5W/PLAYSTATION5W.png",
+    imgs: [
+      "https://store.sony.com.au/on/demandware.static/-/Sites-sony-master-catalog/default/dw1b537bbb/images/PLAYSTATION5W/PLAYSTATION5W.png",
+      "https://store.sony.com.au/on/demandware.static/-/Sites-sony-master-catalog/default/dw1b537bbb/images/PLAYSTATION5W/PLAYSTATION5W.png",
+      "https://store.sony.com.vn/cdn/shop/files/Access_PR_01_RGB_400x.png?v=1694746471",
+      "https://store.sony.com.au/on/demandware.static/-/Sites-sony-master-catalog/default/dw1b537bbb/images/PLAYSTATION5W/PLAYSTATION5W.png",
+      "https://store.sony.com.vn/cdn/shop/files/Access_PR_01_RGB_400x.png?v=1694746471",
+      "https://store.sony.com.au/on/demandware.static/-/Sites-sony-master-catalog/default/dw1b537bbb/images/PLAYSTATION5W/PLAYSTATION5W.png",
+      "https://store.sony.com.vn/cdn/shop/files/Access_PR_01_RGB_400x.png?v=1694746471",
+      "https://store.sony.com.au/on/demandware.static/-/Sites-sony-master-catalog/default/dw1b537bbb/images/PLAYSTATION5W/PLAYSTATION5W.png",
+    ],
     title: "Playstation 5 Digital Edition",
+    description: "Playstation 5 Digital Edition is the latest gaming console with advanced features...",
     category: "Gaming",
     color: "white",
     producer: "Sony",
@@ -13,8 +23,11 @@ export const products = [
   },
   {
     id: 2,
-    img: "https://www.pngmart.com/files/6/Dell-Laptop-PNG-Image.png",
+    imgs: [
+      "https://www.pngmart.com/files/6/Dell-Laptop-PNG-Image.png"
+    ],
     title: "Dell Laptop KR211822",
+    description: "Dell Laptop KR211822 with powerful performance and sleek design...",
     category: "Electronics",
     color: "black",
     producer: "Dell",
@@ -24,8 +37,11 @@ export const products = [
   },
   {
     id: 3,
-    img: "http://images.samsung.com/is/image/samsung/uk-led-tv-hg40ed670ck-hg40ed670ckxxu-001-front",
+    imgs: [
+      "http://images.samsung.com/is/image/samsung/uk-led-tv-hg40ed670ck-hg40ed670ckxxu-001-front"
+    ],
     title: "Samsung TV 4K SmartTV",
+    description: "Samsung TV 4K SmartTV with stunning picture quality and smart features...",
     category: "Electronics",
     color: "gray",
     producer: "Samsung",
@@ -35,8 +51,11 @@ export const products = [
   },
   {
     id: 4,
-    img: "https://raylo.imgix.net/iphone-14-blue.png",
+    imgs: [
+      "https://raylo.imgix.net/iphone-14-blue.png"
+    ],
     title: "Apple Iphone 14 Pro Max",
+    description: "Apple Iphone 14 Pro Max with advanced camera and performance...",
     category: "Electronics",
     color: "white",
     producer: "Apple",
@@ -46,8 +65,11 @@ export const products = [
   },
   {
     id: 5,
-    img: "https://www.signify.com/b-dam/signify/en-aa/about/news/2020/20200903-movie-night-essentials-popcorn-ice-cream-and-the-new-philips-hue-play-gradient-lightstrip/packaging-lighstrip.png",
+    imgs: [
+      "https://www.signify.com/b-dam/signify/en-aa/about/news/2020/20200903-movie-night-essentials-popcorn-ice-cream-and-the-new-philips-hue-play-gradient-lightstrip/packaging-lighstrip.png"
+    ],
     title: "Philips Hue Play Gradient",
+    description: "Philips Hue Play Gradient with vibrant lighting options...",
     category: "Home Appliances",
     color: "rainbow",
     producer: "Philips",
@@ -57,8 +79,11 @@ export const products = [
   },
   {
     id: 6,
-    img: "https://www.smartworld.it/wp-content/uploads/2019/09/High_Resolution_PNG-MX-Master-3-LEFT-GRAPHITE.png",
+    imgs: [
+      "https://www.smartworld.it/wp-content/uploads/2019/09/High_Resolution_PNG-MX-Master-3-LEFT-GRAPHITE.png"
+    ],
     title: "Logitech MX Master 3",
+    description: "Logitech MX Master 3 with ergonomic design and precision...",
     category: "Electronics",
     color: "black",
     producer: "Logitech",
@@ -68,8 +93,11 @@ export const products = [
   },
   {
     id: 7,
-    img: "https://www.pngarts.com/files/7/Podcast-Mic-PNG-Picture.png",
+    imgs: [
+      "https://www.pngarts.com/files/7/Podcast-Mic-PNG-Picture.png"
+    ],
     title: "Rode Podcast Microphone",
+    description: "Rode Podcast Microphone with professional audio quality...",
     category: "Electronics",
     color: "gray",
     producer: "Rode",
@@ -79,8 +107,11 @@ export const products = [
   },
   {
     id: 8,
-    img: "https://5.imimg.com/data5/SW/VM/MY-5774620/toshiba-split-ac-2-ton-3-star-rated-ras-24s3ks-500x500.png",
+    imgs: [
+      "https://5.imimg.com/data5/SW/VM/MY-5774620/toshiba-split-ac-2-ton-3-star-rated-ras-24s3ks-500x500.png"
+    ],
     title: "Toshiba Split AC 2",
+    description: "Toshiba Split AC 2 with efficient cooling and energy-saving features...",
     category: "Home Appliances",
     color: "white",
     producer: "Toshiba",
@@ -90,8 +121,11 @@ export const products = [
   },
   {
     id: 9,
-    img: "https://img.productz.com/review_image/102489/preview_sony-kdl-50w800b-50-inch-hdtv-review-superb-picture-102489.png",
+    imgs: [
+      "https://img.productz.com/review_image/102489/preview_sony-kdl-50w800b-50-inch-hdtv-review-superb-picture-102489.png"
+    ],
     title: "Sony Bravia KDL-47W805A",
+    description: "Sony Bravia KDL-47W805A with exceptional picture quality...",
     category: "Electronics",
     color: "black",
     producer: "Sony",
@@ -101,8 +135,11 @@ export const products = [
   },
   {
     id: 10,
-    img: "https://venturebeat.com/wp-content/uploads/2015/07/As_AO1-131_gray_nonglare_win10_03.png?fit=1338%2C1055&strip=all",
+    imgs: [
+      "https://venturebeat.com/wp-content/uploads/2015/07/As_AO1-131_gray_nonglare_win10_03.png?fit=1338%2C1055&strip=all"
+    ],
     title: "Acer Laptop 16 KL-4804",
+    description: "Acer Laptop 16 KL-4804 with powerful performance and sleek design...",
     category: "Electronics",
     color: "black",
     producer: "Acer",
@@ -121,8 +158,8 @@ export const menu = [
   },
   {
     id: 2,
-    title: "Users",
-    url: "/users",
+    title: "Accounts",
+    url: "/accounts",
     icon: "user.svg",
   },
   {
@@ -133,22 +170,72 @@ export const menu = [
   },
   {
     id: 4,
+    title: "Create Product",
+    url: "/products/create",
+    icon: "product.svg",
+  },
+  {
+    id: 5,
     title: "Orders",
     url: "/orders",
     icon: "order.svg",
   },
   {
-    id: 5,
+    id: 6,
     title: "Posts",
     url: "/posts",
     icon: "post.svg",
   },
   {
-    id: 6,
-    title: "System",
-    url: "/system",
+    id: 7,
+    title: "System Log",
+    url: "/system-log",
     icon: "system.svg",
   },
+];
+
+export const orders = [
+  {
+    id: 1,
+    customer: "John Doe",
+    email: "john@example.com",
+    phone: "123-456-7890",
+    date: "2023-01-01",
+    amount: "$123.45",
+    status: "Shipped",
+    products: [
+      {
+        id: 1,
+        title: "Playstation 5 Digital Edition",
+        img: "https://store.sony.com.au/on/demandware.static/-/Sites-sony-master-catalog/default/dw1b537bbb/images/PLAYSTATION5W/PLAYSTATION5W.png",
+        price: "$250.99",
+      },
+      {
+        id: 2,
+        title: "Dell Laptop KR211822",
+        img: "https://www.pngmart.com/files/6/Dell-Laptop-PNG-Image.png",
+        price: "$499.99",
+      },
+    ],
+  },
+  {
+    id: 2,
+    customer: "Jane Smith",
+    email: "jane@example.com",
+    phone: "987-654-3210",
+    date: "2023-01-02",
+    amount: "$67.89",
+    status: "Pending",
+    products: [
+      {
+        id: 3,
+        title: "Samsung TV 4K SmartTV",
+        img: "http://images.samsung.com/is/image/samsung/uk-led-tv-hg40ed670ck-hg40ed670ckxxu-001-front",
+        price: "$999.49",
+      },
+    ],
+  },
+  // Thêm các đơn hàng khác...
 ];
 
 //   {
