@@ -79,7 +79,7 @@ const Orders = () => {
 
     return (
         <Container>
-            <Typography variant="h4" gutterBottom marginBottom={5} marginTop={3} style={{ color: 'black' }}>
+            <Typography variant="h4" gutterBottom marginBottom={5} marginTop={3}>
                 Quản lý đơn hàng
             </Typography>
             <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">
