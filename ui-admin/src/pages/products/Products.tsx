@@ -1,3 +1,4 @@
+// ui-admin/src/pages/products/Products.tsx
 import "./products.scss"
 
 const Home = () =>{

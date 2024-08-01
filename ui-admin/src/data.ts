@@ -1,42 +1,43 @@
+// ui-admin/src/data.ts
 export const menu = [
+  {
+    id: 1,
+    title: "Dashboard",
+    url: "/",
+    icon: "home.svg",
+  },
+  {
+    id: 2,
+    title: "Users",
+    url: "/users",
+    icon: "user.svg",
+  },
+  {
+    id: 3,
+    title: "Products",
+    url: "/products",
+    icon: "product.svg",
+  },
+  {
+    id: 4,
+    title: "Orders",
+    url: "/orders",
+    icon: "order.svg",
+  },
+  {
+    id: 5,
+    title: "Posts",
+    url: "/posts",
+    icon: "post.svg",
+  },
+  {
+    id: 6,
+    title: "System",
+    url: "/system",
+    icon: "system.svg",
+  },
+];
 
-      {
-        id: 1,
-        title: "Dashboard",
-        url: "/",
-        icon: "home.svg",
-      },
-      {
-        id: 2,
-        title: "Users",
-        url: "/users",
-        icon: "user.svg",
-      },
-      {
-        id: 3,
-        title: "Products",
-        url: "/products",
-        icon: "product.svg",
-      },
-      {
-        id: 4,
-        title: "Orders",
-        url: "/orders",
-        icon: "order.svg",
-      },
-      {
-        id: 5,
-        title: "Posts",
-        url: "/posts",
-        icon: "post.svg",
-      },
-    {
-      id: 6,
-      title: "System",
-      url: "/",
-      icon: "system.svg",
-    }
-  ];
 //   {
 //     id: 2,
 //     title: "lists",

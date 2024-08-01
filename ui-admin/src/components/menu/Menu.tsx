@@ -1,23 +1,21 @@
-import "./menu.scss"
-import {Link} from "react-router-dom";
-import {menu} from "../../data.ts";
+// ui-admin/src/components/menu/Menu.tsx
+import "./menu.scss";
+import { Link } from "react-router-dom";
+import { menu } from "../../data.ts";
 
-const Menu = () =>{
+const Menu = () => {
     return (
         <div className="menu">
             {menu.map((item) => (
-                <div className="item">
-                    <Link to="/" className="listItem" key={item.id}>
-                        <img src={item.icon} alt=""/>
+                <div className="item" key={item.id}>
+                    <Link to={item.url} className="listItem">
+                        <img src={item.icon} alt={item.title} />
                         <span className="listitemTitle">{item.title}</span>
                     </Link>
-
                 </div>
-            ))
-            }
-
+            ))}
         </div>
-    )
-}
+    );
+};
 
-export default Menu
+export default Menu;
