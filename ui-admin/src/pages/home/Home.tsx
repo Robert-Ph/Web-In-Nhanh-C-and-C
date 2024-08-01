@@ -1,3 +1,4 @@
+// ui-admin/src/pages/home/Home.tsx
 import "./home.scss"
 import TopBox from "../../components/topbox/TopBox.tsx";
 import ChartBox from "../../components/chartBox/ChartBox.tsx";

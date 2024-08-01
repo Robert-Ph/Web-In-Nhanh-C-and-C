@@ -1,5 +1,4 @@
-
-
+// ui-admin/src/App.tsx
 // import './App.css'
 import Home from "./pages/home/Home.tsx";
 import {
@@ -12,9 +11,6 @@ import Navbar from "./components/navbar/Navbar.tsx";
 import Users from "./pages/users/Users.tsx";
 import Menu from "./components/menu/Menu.tsx";
 import "./styles/global.scss"
-import User from "./pages/users/User.tsx";
-
-
 
 function App() {
 
