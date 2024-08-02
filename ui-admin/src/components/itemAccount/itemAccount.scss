@@ -1,0 +1,27 @@
+// ui-admin/src/components/itemAccount/itemAccount.scss
+@import "../../styles/responsive.scss";
+
+.itemAccount {
+  border: 1px solid #a6a6a6;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+
+  .img {
+    height: 110px;
+    width: 130px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .info {
+    .label {
+      display: block;
+      margin-top: 5px;
+      font-size: 14px;
+      color: #333;
+    }
+  }
+}

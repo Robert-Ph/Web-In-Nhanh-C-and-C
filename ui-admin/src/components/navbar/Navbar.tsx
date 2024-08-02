@@ -13,7 +13,7 @@ const Navbar = () =>{
                 </div>
 
                 <div className="user">
-                <img src="/user.svg" alt=""/>
+                <img src="/icons/account.svg" alt=""/>
                     <span>VFLT</span>
                 </div>
                 <img src="/setting.svg" alt="" className="icon"/>

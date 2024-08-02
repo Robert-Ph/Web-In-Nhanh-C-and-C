@@ -5,7 +5,7 @@ import Home from "./pages/home/Home.tsx";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Products from "./pages/products/Products.tsx";
 import Navbar from "./components/navbar/Navbar.tsx";
-import Accounts from "./pages/users/Users.tsx";
+import Accounts from "./pages/accounts/Accounts.tsx";
 import Menu from "./components/menu/Menu.tsx";
 import "./styles/global.scss";
 import Orders from "./pages/orders/Orders.tsx";
@@ -14,6 +14,7 @@ import EditProduct from "./pages/products/EditProduct.tsx";
 import CreateProduct from "./pages/products/CreateProduct.tsx";
 import SystemLog from "./pages/system/SystemLog.tsx";
 import theme from './theme';
+import AccountDetail from "./pages/accounts/AccountDetail.tsx";
 
 const Layout = () => {
     return (
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
             { path: "/products/edit/:productId", element: <EditProduct /> },
             { path: "/products/create", element: <CreateProduct /> },
             { path: "/system-log", element: <SystemLog /> },
+            { path: "/account/:id", element: <AccountDetail /> },
         ],
     },
 ]);
