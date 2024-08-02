@@ -1,0 +1,54 @@
+// ui-admin/src/pages/products/editProduct.scss
+.edit-product {
+  padding: 20px;
+
+  .MuiPaper-root {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .MuiTypography-h4 {
+    margin-bottom: 20px;
+  }
+
+  .MuiGrid-item {
+    margin-bottom: 20px;
+  }
+
+  .MuiCard-root {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .MuiCardMedia-root {
+    object-fit: cover;
+  }
+
+  .MuiButton-containedPrimary {
+    background-color: #1976d2;
+    color: #fff;
+
+    &:hover {
+      background-color: #1565c0;
+    }
+  }
+
+  .MuiButton-containedSecondary {
+    background-color: #d32f2f;
+    color: #fff;
+
+    &:hover {
+      background-color: #c62828;
+    }
+  }
+
+  .MuiIconButton-root {
+    color: #d32f2f;
+  }
+
+  .description-container {
+    margin-top: 20px;
+  }
+}

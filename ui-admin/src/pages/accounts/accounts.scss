@@ -1,0 +1,29 @@
+// ui-admin/src/pages/accounts/accounts.scss
+@import "../../styles/variables.scss";
+
+.accounts {
+  color: black;
+  gap: 20px;
+
+  .search {
+    width: 200px;
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid $main-bg;
+    margin-top: 20px;
+    margin-left: 100px;
+  }
+
+  .add {
+    float: right;
+    height: 40px;
+    width: 100px;
+    margin-right: 50px;
+    border: 1px solid #a6a6a6;
+    border-radius: 10px;
+  }
+
+  .account-list {
+    margin-top: 70px;
+  }
+}

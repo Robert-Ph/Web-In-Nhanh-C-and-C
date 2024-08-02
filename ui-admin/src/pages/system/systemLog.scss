@@ -1,0 +1,21 @@
+// ui-admin/src/pages/system/systemLog.scss
+.system-log {
+  padding: 20px;
+
+  .MuiPaper-root {
+    padding: 20px;
+  }
+
+  .MuiTable-root {
+    min-width: 650px;
+  }
+
+  .MuiTableCell-root {
+    padding: 16px;
+  }
+
+  .MuiTablePagination-root {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

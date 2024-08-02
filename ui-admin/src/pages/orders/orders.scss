@@ -1,0 +1,33 @@
+// ui-admin/src/pages/orders/orders.scss
+.orders {
+  padding: 20px;
+
+  .MuiTableContainer-root {
+    margin-top: 20px;
+  }
+
+  .MuiButton-root {
+    text-transform: none;
+  }
+
+  img {
+    width: 50px;
+    height: auto;
+  }
+
+  .MuiOutlinedInput-root {
+    width: 100%;
+  }
+
+  .MuiFormControl-root {
+    width: 100%;
+  }
+
+  .MuiSelect-root {
+    width: 100%;
+  }
+
+  Typography {
+    color: black;
+  }
+}

@@ -1,0 +1,13 @@
+// src/pages/accounts/accountDetail.scss
+.account-detail-paper {
+  padding: 20px;
+  margin-top: 20px;
+}
+
+// src/components/itemAccount/itemAccount.scss
+.itemAccount {
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}
