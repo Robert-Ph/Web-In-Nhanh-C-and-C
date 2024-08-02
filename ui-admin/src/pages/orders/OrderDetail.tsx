@@ -34,7 +34,7 @@ const OrderDetail = () => {
             </Typography>
             <Card>
                 <CardContent>
-                    <Typography variant="h6">Thông tin khách hàng</Typography>
+                    <Typography variant="h4">Thông tin khách hàng</Typography>
                     <Typography variant="body1">Tên khách hàng: {order.customer}</Typography>
                     <Typography variant="body1">Email: {order.email}</Typography>
                     <Typography variant="body1">Số điện thoại: {order.phone}</Typography>

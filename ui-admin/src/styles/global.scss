@@ -7,6 +7,10 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -16,10 +20,14 @@ a {
   font-family: "Inter", sans-serif;
   background-color: white;
   color: $main-color;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
   display: flex;
+  flex: 1;
 }
 
 .menuContainer {
@@ -27,14 +35,63 @@ a {
   padding: 5px 20px;
   border-right: 2px solid $soft-bg;
   background: $main-bg;
+  height: 100%;
 
   @include lg{
     width: max-content;
   }
 }
 
-.comentContainer{
+.comentContainer {
   padding: 10px 20px;
   width: 100%;
   //background: white;
+}
+
+.menu {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .item {
+    margin: 10px 0;
+
+    .listItem {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.3s, color 0.3s;
+
+      &:hover {
+        background-color: #f0f0f0;
+        color: #1976d2;
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+      }
+
+      .listitemTitle {
+        font-size: 16px;
+      }
+    }
+
+    .listItem.active {
+      background-color: #1976d2;
+      color: #fff;
+
+      img {
+        filter: brightness(0) invert(1);
+      }
+
+      .listitemTitle {
+        font-weight: bold;
+      }
+    }
+  }
 }
