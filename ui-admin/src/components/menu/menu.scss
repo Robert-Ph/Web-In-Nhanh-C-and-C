@@ -1,25 +1,43 @@
-@import "../../styles/global.scss";
+.menu {
+  .item {
+    margin: 10px 0;
 
-.menu{
-  height: 885px;
-  //background: red;
-  .item{
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
+    .listItem {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.3s, color 0.3s;
 
-  .listItem{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 5px;
+      &:hover {
+        background-color: #f0f0f0;
+        color: #1976d2;
+      }
 
-    &:hover{
-      background-color: $soft-bg;
+      img {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+      }
+
+      .listitemTitle {
+        font-size: 16px;
+      }
+    }
+
+    .listItem.active {
+      background-color: #1976d2;
+      color: #fff;
+
+      img {
+        filter: brightness(0) invert(1);
+      }
+
+      .listitemTitle {
+        font-weight: bold;
+      }
     }
   }
-  }
-
 }

@@ -8,6 +8,17 @@ const theme = createTheme({
             fontWeight: 'bold',
         },
     },
+    components: {
+        MuiTableCell: {
+            styleOverrides: {
+                head: {
+                    color: 'black',
+                    fontWeight: 'bold',
+                    fontSize:'2.5vh'
+                },
+            },
+        },
+    },
 });
 
 export default theme;

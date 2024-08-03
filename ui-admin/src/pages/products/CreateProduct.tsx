@@ -1,5 +1,5 @@
 // ui-admin/src/pages/products/CreateProduct.tsx
-import "./editProduct.scss"; // Reuse the same styles as EditProduct
+import "./createProduct.scss"; // Reuse the same styles as
 import { useNavigate } from "react-router-dom";
 import { useState, ChangeEvent } from "react";
 import axios from "axios";
@@ -22,6 +22,7 @@ import { Delete } from "@mui/icons-material";
 interface Product {
     imgs: string[];
     title: string;
+    description: string;
     category: string;
     color: string;
     producer: string;
@@ -37,9 +38,9 @@ const CreateProduct = () => {
         inStock: true,
     });
     const [uploading, setUploading] = useState<boolean>(false);
-    const [imageToDelete, setImageToDelete] = useState<number | null>(null);
+    const [, setImageToDelete] = useState<number | null>(null);
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -73,35 +74,9 @@ const CreateProduct = () => {
         }
     };
 
-    const handleImageChange = (index: number, value: string) => {
-        const updatedImages = formData.imgs?.map((img, i) =>
-            i === index ? value : img
-        );
-        setFormData((prev) => ({
-            ...prev,
-            imgs: updatedImages,
-        }));
-    };
-
     const handleRemoveImage = (index: number) => {
         setImageToDelete(index);
     };
-
-    const handleDeleteConfirm = () => {
-        if (imageToDelete !== null) {
-            const updatedImages = formData.imgs?.filter((_, i) => i !== imageToDelete);
-            setFormData((prev) => ({
-                ...prev,
-                imgs: updatedImages,
-            }));
-        }
-        setImageToDelete(null);
-    };
-
-    const handleDeleteCancel = () => {
-        setImageToDelete(null);
-    };
-
     return (
         <Container>
             <Typography variant="h4" gutterBottom>
@@ -133,45 +108,16 @@ const CreateProduct = () => {
                                 <MenuItem value="Home Appliances">Home Appliances</MenuItem>
                             </TextField>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <TextField
                                 fullWidth
-                                label="Màu sắc"
-                                name="color"
-                                value={formData.color || ""}
+                                label="Mô tả sản phẩm"
+                                name="description"
+                                multiline
+                                rows={4}
+                                value={formData.description || ""}
                                 onChange={handleInputChange}
                             />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                label="Nhà sản xuất"
-                                name="producer"
-                                value={formData.producer || ""}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                label="Giá"
-                                name="price"
-                                value={formData.price || ""}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                label="Trạng thái kho"
-                                name="inStock"
-                                select
-                                value={formData.inStock ? "true" : "false"}
-                                onChange={handleInputChange}
-                            >
-                                <MenuItem value="true">Còn hàng</MenuItem>
-                                <MenuItem value="false">Hết hàng</MenuItem>
-                            </TextField>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="h6">Ảnh sản phẩm</Typography>
@@ -186,15 +132,11 @@ const CreateProduct = () => {
                                                 alt={`Ảnh ${index + 1}`}
                                             />
                                             <CardContent>
-                                                <TextField
-                                                    fullWidth
-                                                    label={`Ảnh ${index + 1}`}
-                                                    value={img}
-                                                    onChange={(e) => handleImageChange(index, e.target.value)}
-                                                />
-                                                <IconButton color="secondary" onClick={() => handleRemoveImage(index)}>
-                                                    <Delete />
-                                                </IconButton>
+                                                <Box display="flex" justifyContent="center">
+                                                    <IconButton color="secondary" onClick={() => handleRemoveImage(index)}>
+                                                        <Delete />
+                                                    </IconButton>
+                                                </Box>
                                             </CardContent>
                                         </Card>
                                     </Grid>

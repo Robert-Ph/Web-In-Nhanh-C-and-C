@@ -47,6 +47,9 @@ const AccountDetail = () => {
                 <Paper className="account-detail-paper">
                     <Typography variant="h6">Họ và tên: {account.name}</Typography>
                     <Typography variant="h6">Số điện thoại: {account.phone}</Typography>
+                    <Typography variant="h6">Email: {account.email}</Typography>
+                    <Typography variant="h6">Địa chỉ: {account.address}</Typography>
+                    <Typography variant="h6">Ngày tạo: {account.createdAt}</Typography>
                     <Typography variant="h6">Loại tài khoản: {account.category}</Typography>
                     <Typography variant="h6">Quyền: {account.role} ({getCategoryByRole(account.role)})</Typography>
                 </Paper>
