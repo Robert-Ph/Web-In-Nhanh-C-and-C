@@ -1,0 +1,11 @@
+.slider-image {
+    height: 15vh; /* Điều chỉnh chiều cao của ảnh theo nhu cầu */
+    width: 100vh;  /* Điều chỉnh chiều rộng của ảnh theo nhu cầu */
+    object-fit: cover; /* Đảm bảo ảnh được bao phủ đều */
+    cursor: pointer; /* Con trỏ thay đổi thành pointer khi hover */
+    border: 2px solid transparent; /* Khung viền mặc định */
+}
+
+.slider-image.selected {
+    border-color: #3498db; /* Màu viền khi được chọn */
+}
