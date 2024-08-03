@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import ProductCard from './ProductCard';
-import Banner from './Banner';
+import ProductCard from '../components/ProductCard.tsx';
+import Banner from '../components/Banner.tsx';
 import axios from 'axios';
 
 interface Media {

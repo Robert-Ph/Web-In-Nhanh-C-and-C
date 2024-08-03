@@ -9,17 +9,17 @@ import BannerSection from "./components/BannerSection";
 import Newsletter from "./components/Newsletter";
 import FeatureSectionServiceShop from "./components/FeatureSectionServiceShop.tsx";
 import Footer from "./components/Footer";
-import ProductDetail from "./components/ProductDetail";
-import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
-import ForgotPass from "./components/ForgotPass";
-import Cart from "./components/Cart";
-import Checkout from "./components/Checkout";
+import ProductDetail from "./pages/ProductDetail.tsx";
+import SignIn from "./pages/SignIn.tsx";
+import SignUp from "./pages/SignUp.tsx";
+import ForgotPass from "./pages/ForgotPass.tsx";
+import Cart from "./pages/Cart.tsx";
+import Checkout from "./pages/Checkout.tsx";
 import Breadcrumb from "./components/Breadcrumb";
-import ProductList from "./components/ProductList.tsx";
+import ProductList from "./pages/ProductList.tsx";
 import ScrollToTop from './components/ScrollToTop';
 import FeatureSectionInfoShop from "./components/FeatureSectionInfoShop.tsx";
-import OrderHistory from "./components/OrderHistory.tsx";
+import OrderHistory from "./pages/OrderHistory.tsx";
 
 const App = () => {
     return (

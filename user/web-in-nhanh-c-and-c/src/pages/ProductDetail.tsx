@@ -2,7 +2,7 @@
 import {AiFillStar, AiOutlineStar, AiOutlineShoppingCart} from "react-icons/ai";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import RelatedProducts from "./RelatedProducts.tsx";
+import RelatedProducts from "../components/RelatedProducts.tsx";
 
 interface Review {
     rating: number;

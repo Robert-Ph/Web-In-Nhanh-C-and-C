@@ -7,17 +7,16 @@ import lombok.ToString;
 
 import java.sql.Timestamp;
 
-
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "accounts")
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer user_id;
+    private Integer account_id;
 
     @Column(name = "username")
     private String username;
