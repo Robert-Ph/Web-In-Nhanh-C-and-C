@@ -7,16 +7,17 @@ const Navbar = () =>{
                 <img className="img" src="../../../public/VFLT.png" alt=""/>
             </div>
             <div className="icons">
-                <div className="notification">
-                    <img src="/notifications.svg" alt=""/>
-                    <span>1</span>
-                </div>
+                {/*<div className="notification">*/}
+                {/*    <img src="/notifications.svg" alt=""/>*/}
+                {/*    <span>1</span>*/}
+                {/*</div>*/}
 
                 <div className="user">
                 <img src="/icons/account.svg" alt=""/>
-                    <span>VFLT</span>
+                    <span>Nguyen Van A</span>
                 </div>
-                <img src="/setting.svg" alt="" className="icon"/>
+                <button>Log out</button>
+
                 
             </div>
         </div>

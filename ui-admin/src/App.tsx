@@ -15,6 +15,7 @@ import CreateProduct from "./pages/products/CreateProduct.tsx";
 import SystemLog from "./pages/system/SystemLog.tsx";
 import theme from './theme';
 import AccountDetail from "./pages/accounts/AccountDetail.tsx";
+import Login from  "./pages/login/Login.tsx";
 import {QueryClient, QueryClientProvider} from "react-query";
 
 const queryClient = new QueryClient();
@@ -35,7 +36,9 @@ const Layout = () => {
     );
 };
 
+
 const router = createBrowserRouter([
+    {path:"/login", element:<Login />},
     {
         path: "/",
         element: <Layout />,
@@ -49,6 +52,7 @@ const router = createBrowserRouter([
             { path: "/products/create", element: <CreateProduct /> },
             { path: "/system-log", element: <SystemLog /> },
             { path: "/account/:id", element: <AccountDetail /> },
+
         ],
     },
 ]);
