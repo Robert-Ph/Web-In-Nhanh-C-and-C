@@ -20,6 +20,7 @@ import ProductList from "./pages/ProductList.tsx";
 import ScrollToTop from './components/ScrollToTop';
 import FeatureSectionInfoShop from "./components/FeatureSectionInfoShop.tsx";
 import OrderHistory from "./pages/OrderHistory.tsx";
+import Profile from './pages/Profile.tsx';
 
 const App = () => {
     return (
@@ -63,6 +64,7 @@ const App = () => {
                                 <Route path="/checkout" element={<Checkout />} />
                                 <Route path="/products" element={<ProductList />} />
                                 <Route path="/order-history" element={<OrderHistory />} />
+                                <Route path="/profile" element={<Profile />} />
                             </Routes>
                             <Footer />
                         </>
