@@ -118,12 +118,14 @@ const Navbar = () => {
     };
 
     return (
-        <div className="fixed top-0 left-0 w-full z-50" style={{ backgroundColor: theme.navbarBackground }}>
-            <div className="container pb-5 hidden lg:block">
-                <div className="flex justify-between items-center pt-8 navbar">
+        <div className="fixed top-0 left-0 w-full z-50 mb-5" style={{ backgroundColor: theme.navbarBackground }}>
+            <div className="container pb-2 hidden lg:block">
+                <div className="flex justify-between items-center pt-0 navbar">
                     <div className="flex items-center">
-                        <Link to="/">
-                            <h1 className="text-4xl font-medium ml-32" style={{ color: 'white', backgroundColor: 'orange' }}>Logo</h1>
+                        <Link to="/" className="mt-1">
+                            {/*<img rel="icon"  href="/LogoCandC.svg"/>*/}
+                            <img className="ml-32 mt-2" style={{width:'200px', height:'70px'}} src="../../public/LogoCandC.svg" alt="logo"/>
+                            <h1 className="text-4xl font-medium ml-32" style={{color: 'white', backgroundColor: 'orange'}}></h1>
                         </Link>
                         <div className="relative flex items-center ml-8 bg-white bg-opacity-20 p-2 rounded-lg" onMouseLeave={handleCategoryMouseLeave}>
                             <AiOutlineMenu className="text-white text-2xl mr-2 cursor-pointer" style={{ color: '#00359c' }} onClick={toggleCategoryDropdown} />

@@ -1,0 +1,63 @@
+// ui-admin/src/pages/system/login.scss
+.login{
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(#004E92, #000428);
+
+  .header{
+    height: 30vh;
+
+    .title{
+      align-items: center;
+      margin-top: 100px;
+      justify-content: center;
+      height: 100px;
+      float: left;
+      color: white;
+      display: inline-block;
+      width: 50%;
+    }
+    .text{
+      border-right: 4px solid white;
+    }
+    .text h1{
+      margin-right: 10px;
+      font-size: 76px;
+      float: right;
+    }
+
+    .text_2 h1{
+      margin-left: 10px;
+      font-size: 40px;
+      float: left;
+      line-height: 1.2;
+    }
+  }
+  .body{
+    padding-top: 7%;
+    padding-left: 40%;
+    color: white;
+    input{
+      width: 400px;
+      height: 50px;
+      border-radius: 10px;
+    }
+    .pass{
+      margin-top: 20px;
+    }
+    button{
+      font-size: 28px;
+      border-radius: 10px;
+      color: white;
+      border: none;
+      background-color: #0000FF;
+      margin-top: 70px;
+      width: 400px;
+      height: 50px;
+    }
+    button:active{
+      background-color: #747bff;
+    }
+
+  }
+}
