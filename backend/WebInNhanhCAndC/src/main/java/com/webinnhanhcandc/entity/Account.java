@@ -33,8 +33,8 @@ public class Account {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "is_admin")
-    private Boolean isAdmin;
+    @Column(name = "role")
+    private Boolean role;
 
     @Column(name = "created_at")
     private Timestamp createdAt;

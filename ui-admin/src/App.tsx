@@ -15,6 +15,9 @@ import CreateProduct from "./pages/products/CreateProduct.tsx";
 import SystemLog from "./pages/system/SystemLog.tsx";
 import theme from './theme';
 import AccountDetail from "./pages/accounts/AccountDetail.tsx";
+import {QueryClient, QueryClientProvider} from "react-query";
+
+const queryClient = new QueryClient();
 
 const Layout = () => {
     return (
@@ -54,7 +57,9 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <RouterProvider router={router} />
+            <QueryClientProvider client={queryClient}>
+                <RouterProvider router={router} />
+            </QueryClientProvider>
         </ThemeProvider>
     );
 }
