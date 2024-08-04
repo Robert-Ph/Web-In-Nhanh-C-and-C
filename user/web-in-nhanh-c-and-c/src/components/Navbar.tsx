@@ -254,12 +254,14 @@ const Navbar = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="flex items-center">
-                            <div className="icon_wrapper transition transform hover:scale-110 active:scale-90 bg-white text-black rounded-full p-2">
-                                <AiOutlineUser />
+                        <Link to="/profile">
+                            <div className="flex items-center">
+                                <div className="icon_wrapper transition transform hover:scale-110 active:scale-90 bg-white text-black rounded-full p-2">
+                                    <AiOutlineUser />
+                                </div>
+                                <h2 className="ml-2">Nguyễn Văn Trường</h2>
                             </div>
-                            <h2 className="ml-2">Nguyễn Văn Trường</h2>
-                        </div>
+                        </Link>
                         <div className="icon_wrapper relative transition transform hover:scale-110 active:scale-90 bg-white text-black rounded-full p-2" onClick={toggleCartSidebar}>
                             <AiOutlineShoppingCart />
                             <CartCountBadge size="w-[25px] h-[25px]" />
