@@ -1,5 +1,5 @@
 // src/App.tsx
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -27,6 +27,7 @@ const App = () => {
         <ThemeProvider>
             <Router>
                 <Routes>
+                    <Route path='/' element={<Navigate to="/home" replace />} />
                     <Route path='/*' element={
                         <>
                             <ScrollToTop />
