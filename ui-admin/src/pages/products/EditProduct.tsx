@@ -1,9 +1,9 @@
 // ui-admin/src/pages/products/EditProduct.tsx
 import "./editProduct.scss";
 import { useParams, useNavigate } from "react-router-dom";
-import { products } from "../../data.ts";
 import { useState, useEffect, ChangeEvent } from "react";
 import axios, { AxiosResponse } from "axios";
+import { fetchCategories } from "../../services/categoryService";
 import {
     Container,
     Typography,
@@ -25,34 +25,64 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 
+interface Media {
+    mediaId: number;
+    fileUrl: string;
+    fileType: string;
+    fileSize: number;
+    uploadedAt: string;
+}
+
 interface Product {
-    id: number;
-    imgs: string[];
-    title: string;
+    productId: number;
+    categoryId: number;
+    categoryName: string;
+    productName: string;
     description: string;
-    category: string;
-    color: string;
-    producer: string;
-    price: string;
+    status: string;
     createdAt: string;
-    inStock: boolean;
+    medias: Media[];
+}
+
+interface Category {
+    category_id: number;
+    categoryName: string;
+    description: string;
+    parentId: number | null;
 }
 
 const EditProduct = () => {
     const { productId } = useParams<{ productId: string }>();
     const navigate = useNavigate();
     const [product, setProduct] = useState<Product | null>(null);
-    const [formData, setFormData] = useState<Product | Partial<Product>>({});
+    const [formData, setFormData] = useState<Partial<Product>>({});
+    const [categories, setCategories] = useState<Category[]>([]);
     const [uploading, setUploading] = useState<boolean>(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
     const [imageToDelete, setImageToDelete] = useState<number | null>(null);
 
     useEffect(() => {
-        const product = products.find((p) => p.id === Number(productId));
-        if (product) {
-            setProduct(product);
-            setFormData(product);
-        }
+        const fetchProduct = async () => {
+            try {
+                const response: AxiosResponse<Product> = await axios.get(`http://localhost:8080/api/products/${productId}`);
+                setProduct(response.data);
+                setFormData(response.data);
+            } catch (error) {
+                console.error("Error fetching product data:", error);
+            }
+        };
+
+        const fetchAllCategories = async () => {
+            try {
+                const categoriesData: Category[] = await fetchCategories();
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+
+        fetchProduct();
+        fetchAllCategories();
     }, [productId]);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -79,7 +109,7 @@ const EditProduct = () => {
                 .then((response: AxiosResponse<{ url: string }>) => {
                     setFormData((prev) => ({
                         ...prev,
-                        imgs: [...(prev.imgs || []), response.data.url],
+                        medias: [...(prev.medias || []), { fileUrl: response.data.url } as Media],
                     }));
                     setUploading(false);
                 })
@@ -97,19 +127,19 @@ const EditProduct = () => {
     const handleDeleteConfirm = (action: string) => {
         if (imageToDelete !== null) {
             if (action === "url") {
-                const updatedImages = formData.imgs?.filter((_, i) => i !== imageToDelete);
+                const updatedMedias = formData.medias?.filter((_, i) => i !== imageToDelete);
                 setFormData((prev) => ({
                     ...prev,
-                    imgs: updatedImages,
+                    medias: updatedMedias,
                 }));
             } else if (action === "permanent") {
-                const imageUrl = formData.imgs?.[imageToDelete];
+                const imageUrl = formData.medias?.[imageToDelete]?.fileUrl;
                 axios.post("/delete", { url: imageUrl })
                     .then(() => {
-                        const updatedImages = formData.imgs?.filter((_, i) => i !== imageToDelete);
+                        const updatedMedias = formData.medias?.filter((_, i) => i !== imageToDelete);
                         setFormData((prev) => ({
                             ...prev,
-                            imgs: updatedImages,
+                            medias: updatedMedias,
                         }));
                     });
             }
@@ -139,8 +169,8 @@ const EditProduct = () => {
                             <TextField
                                 fullWidth
                                 label="Tên sản phẩm"
-                                name="title"
-                                value={formData.title}
+                                name="productName"
+                                value={formData.productName}
                                 onChange={handleInputChange}
                             />
                         </Grid>
@@ -148,14 +178,16 @@ const EditProduct = () => {
                             <TextField
                                 fullWidth
                                 label="Loại sản phẩm"
-                                name="category"
+                                name="categoryId"
                                 select
-                                value={formData.category}
+                                value={formData.categoryId}
                                 onChange={handleInputChange}
                             >
-                                <MenuItem value="Gaming">Gaming</MenuItem>
-                                <MenuItem value="Electronics">Electronics</MenuItem>
-                                <MenuItem value="Home Appliances">Home Appliances</MenuItem>
+                                {categories.map((category) => (
+                                    <MenuItem key={category.category_id} value={category.category_id}>
+                                        {category.categoryName}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>
@@ -169,16 +201,34 @@ const EditProduct = () => {
                                 onChange={handleInputChange}
                             />
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth
+                                label="Trạng thái"
+                                name="status"
+                                value={formData.status}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth
+                                label="Ngày tạo"
+                                name="createdAt"
+                                value={formData.createdAt}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
                         <Grid item xs={12}>
                             <Typography variant="h6">Ảnh sản phẩm</Typography>
                             <Grid container spacing={2}>
-                                {formData.imgs?.map((img, index) => (
+                                {formData.medias?.map((media, index) => (
                                     <Grid item xs={12} sm={6} md={4} key={index}>
                                         <Card>
                                             <CardMedia
                                                 component="img"
                                                 height="140"
-                                                image={img || "https://via.placeholder.com/140"}
+                                                image={`http://localhost:8080/api/images/${media.fileUrl}`}
                                                 alt={`Ảnh ${index + 1}`}
                                             />
                                             <CardContent>
