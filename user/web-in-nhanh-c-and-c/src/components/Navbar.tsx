@@ -122,7 +122,7 @@ const Navbar = () => {
             <div className="container pb-5 hidden lg:block">
                 <div className="flex justify-between items-center pt-8 navbar">
                     <div className="flex items-center">
-                        <Link to="/">
+                        <Link to="/home">
                             <h1 className="text-4xl font-medium ml-32" style={{ color: 'white', backgroundColor: 'orange' }}>Logo</h1>
                         </Link>
                         <div className="relative flex items-center ml-8 bg-white bg-opacity-20 p-2 rounded-lg" onMouseLeave={handleCategoryMouseLeave}>
@@ -252,12 +252,14 @@ const Navbar = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="flex items-center">
-                            <div className="icon_wrapper transition transform hover:scale-110 active:scale-90 bg-white text-black rounded-full p-2">
-                                <AiOutlineUser />
+                        <Link to="/profile">
+                            <div className="flex items-center">
+                                <div className="icon_wrapper transition transform hover:scale-110 active:scale-90 bg-white text-black rounded-full p-2">
+                                    <AiOutlineUser />
+                                </div>
+                                <h2 className="ml-2">Nguyễn Văn Trường</h2>
                             </div>
-                            <h2 className="ml-2">Nguyễn Văn Trường</h2>
-                        </div>
+                        </Link>
                         <div className="icon_wrapper relative transition transform hover:scale-110 active:scale-90 bg-white text-black rounded-full p-2" onClick={toggleCartSidebar}>
                             <AiOutlineShoppingCart />
                             <CartCountBadge size="w-[25px] h-[25px]" />
