@@ -40,7 +40,7 @@ const SignUp = () => {
           >
             {({ isValid, isSubmitting, errors, touched }) => (
               <Form>
-                <div className="form-group">
+                {/* <div className="mb-4">
                   <label className="block">Email Address:</label>
                   <Field
                     type="email"
@@ -53,13 +53,25 @@ const SignUp = () => {
                     component="div"
                     className="text-red-500"
                   />
+                </div> */}
+                <div className="mb-4">
+                  <label htmlFor="name" className="block text-gray-700 text-sm font-medium">Địa chỉ Email:</label>
+                  <Field
+                    id="email"
+                    type="email"
+                    name="email"
+                    className={`bg-gray-100 w-full border-2 border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 ${errors.email && touched.email ? "border-red-500" : ""} transition-colors duration-300`}
+                  />
+                  <div className="h-5">
+                    <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
+                  </div>
                 </div>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded block mx-auto mt-4"
+                  className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors duration-300 block mx-auto mt-8"
                   disabled={!isValid || isSubmitting}
                 >
-                  Continue
+                  Tiếp tục
                 </button>
               </Form>
             )}
@@ -84,63 +96,55 @@ const SignUp = () => {
           >
             {({ isValid, isSubmitting, errors, touched }) => (
               <Form>
-                <div>
-                  <label className="block">Full Name:</label>
+                <div className="mb-4">
+                  <label htmlFor="name" className="block text-gray-700 text-sm font-medium">Họ và tên:</label>
                   <Field
+                    id="name"
                     type="text"
                     name="name"
-                    className={`bg-gray-100 w-full border-2 border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500 ${errors.name && touched.name ? "border-red-500" : ""
-                      }`}
+                    className={`bg-gray-100 w-full border-2 border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 ${errors.name && touched.name ? "border-red-500" : ""} transition-colors duration-300`}
                   />
-                  <ErrorMessage
-                    name="name"
-                    component="div"
-                    className="text-red-500"
-                  />
+                  <div className="h-5">
+                    <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
+                  </div>
                 </div>
-                <div>
-                  <label className="block">Phone Number:</label>
+                <div className="mb-4">
+                  <label htmlFor="phoneNumber" className="block text-gray-700 text-sm font-medium">Số điện thoại:</label>
                   <Field
+                    id="phoneNumber"
                     type="text"
                     name="phoneNumber"
-                    className={`bg-gray-100 w-full border-2 border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500 ${errors.phoneNumber && touched.phoneNumber
-                      ? "border-red-500"
-                      : ""
-                      }`}
+                    className={`bg-gray-100 w-full border-2 border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 ${errors.phoneNumber && touched.phoneNumber ? "border-red-500" : ""} transition-colors duration-300`}
                   />
-                  <ErrorMessage
-                    name="phoneNumber"
-                    component="div"
-                    className="text-red-500"
-                  />
+                  <div className="h-5">
+                    <ErrorMessage name="phoneNumber" component="div" className="text-red-500 text-sm" />
+                  </div>
                 </div>
-                <div>
-                  <label className="block">Password:</label>
+                <div className="mb-4">
+                  <label htmlFor="password" className="block text-gray-700 text-sm font-medium">Mật khẩu:</label>
                   <Field
+                    id="password"
                     type="password"
                     name="password"
-                    className={`bg-gray-100 w-full border-2 border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500 ${errors.password && touched.password ? "border-red-500" : ""
-                      }`}
+                    className={`bg-gray-100 w-full border-2 border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 ${errors.password && touched.password ? "border-red-500" : ""} transition-colors duration-300`}
                   />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="text-red-500"
-                  />
+                  <div className="h-5">
+                    <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
+                  </div>
                 </div>
                 <button
                   type="submit"
-                  className="bg-green-700 text-white px-4 py-2 rounded block w-32 mx-auto mt-4"
+                  className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors duration-300 block mx-auto mt-8"
                   disabled={!isValid || isSubmitting}
                 >
-                  Sign Up
+                  Đăng ký
                 </button>
                 <button
                   type="button"
-                  className="bg-blue-500 text-white px-4 py-2 rounded block mt-4"
+                  className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors duration-300 block mx-auto mt-8"
                   onClick={existsEmail}
                 >
-                  Back
+                  Quay lại
                 </button>
               </Form>
             )}
@@ -152,25 +156,59 @@ const SignUp = () => {
 
   return (
     <>
-        <div className="sing-up_container">
-          <div className="max-w-md mx-auto my-8">
-            <h2 className="text-2xl font-semibold mb-4 text-center">Sign Up</h2>
-            {showCheckEmail ? <FormCheckEmail /> : <FormCreateAccount />}
-            <div className="text-center separator mt-4">
-              Or
-            </div>
+      <div className="bg-[url('background.jpg')] bg-cover bg-center h-screen w-full flex items-center justify-center">
+        <div className="absolute top-20 left-1/2 transform -translate-x-1/2">
+          <a href="/home">
+            <img src="logo.png" alt="Logo" className="w-24 h-auto mx-auto cursor-pointer" />
+          </a>
+        </div>
+        <div className="bg-white bg-opacity-70 p-6 rounded-lg shadow-lg max-w-md h-min w-full mx-auto my-8">
+          <h2 className="text-3xl font-semibold text-black-800 mb-4 text-center">Đăng Ký</h2>
+          {/* <h2 className="text-2xl font-semibold mb-4 text-center">Sign Up</h2> */}
+          {showCheckEmail ? <FormCheckEmail /> : <FormCreateAccount />}
+          <div className="text-center separator mt-4">
+            Hoặc
+          </div>
+
+          {/* <div className="login-with-google mt-4 w-64 mx-auto">
+            <button className="bg-blue-500 text-white px-4 py-2 rounded block w-full">
+              Sign Up with Google
+            </button>
             <div className="login-with-google mt-4 w-64 mx-auto">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded block w-full">
-               Sign Up with Google
+              <button
+                className="flex items-center bg-blue-500 text-white px-4 py-2 rounded w-full"
+              // onClick={handleGoogleSignIn}
+              >
+                <img
+                  src="https://developers.google.com/identity/images/g-logo.png"
+                  alt="Google Logo"
+                  className="w-5 h-5 mr-2"
+                />
+                Google
               </button>
             </div>
-            <div className="have-account mt-4 text-center">
-                <a href="/SignIn" className="text-blue-500">
-                  Sign In ?
-                </a>
-            </div>
+
+          </div> */}
+          <div className="login-with-google mt-4 w-64 mx-auto">
+            <button
+              className="flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 w-full py-2 px-4"
+            // onClick={handleGoogleSignIn}
+            >
+              <img
+                src="https://developers.google.com/identity/images/g-logo.png"
+                alt="Google Logo"
+                className="w-6 h-6 mr-3"
+              />
+              <span className="text-gray-800 font-semibold">Đăng nhập với Google</span>
+            </button>
+          </div>
+          <div className="have-account mt-4 text-center">
+            <a href="/SignIn" className="text-gray-600 hover:text-black">
+              Đăng nhập ?
+            </a>
           </div>
         </div>
+      </div>
     </>
   );
 };
