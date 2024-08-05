@@ -4,11 +4,8 @@ import com.webinnhanhcandc.dto.ProductDTO1;
 import com.webinnhanhcandc.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/products")
@@ -32,5 +29,15 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ProductDTO1 getProductById(@PathVariable Integer productId) {
         return productService.getProductById(productId);
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductDTO1> updateProduct(@PathVariable Integer productId, @RequestBody ProductDTO1 productDTO) {
+        ProductDTO1 updatedProduct = productService.updateProduct(productId, productDTO);
+        if (updatedProduct != null) {
+            return ResponseEntity.ok(updatedProduct);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

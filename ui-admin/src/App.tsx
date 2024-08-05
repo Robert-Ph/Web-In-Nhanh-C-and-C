@@ -38,7 +38,7 @@ const Layout = () => {
 
 
 const router = createBrowserRouter([
-    {path:"/login", element:<Login />},
+    {path:"/admin", element:<Login />},
     {
         path: "/",
         element: <Layout />,

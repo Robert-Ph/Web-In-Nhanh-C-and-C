@@ -91,4 +91,24 @@ public class ProductService {
         mediaDTO.setUploadedAt(media.getUploadedAt());
         return mediaDTO;
     }
+
+    public ProductDTO1 updateProduct(Integer productId, ProductDTO1 productDTO) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            product.setProductName(productDTO.getProductName());
+            product.setDescription(productDTO.getDescription());
+            if (productDTO.getStatus() != null) {
+                product.setStatus(Product.ProductStatus.valueOf(productDTO.getStatus()));
+            }
+            if (productDTO.getCategoryId() != null) {
+                product.setCategoryId(productDTO.getCategoryId());
+            }
+
+            product = productRepository.save(product);
+            return convertToDTO1(product);
+        } else {
+            return null;
+        }
+    }
 }
