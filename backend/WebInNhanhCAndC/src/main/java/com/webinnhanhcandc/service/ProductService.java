@@ -9,16 +9,23 @@ import com.webinnhanhcandc.repository.CategoryRepository;
 import com.webinnhanhcandc.repository.MediaRepository;
 import com.webinnhanhcandc.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
+    @Value("${upload.dir}")
+    private String uploadDir;
 
     @Autowired
     private ProductRepository productRepository;
@@ -82,16 +89,27 @@ public class ProductService {
         return productDTO;
     }
 
-    private MediaDTO1 convertMediaToDTO1(Media media) {
-        MediaDTO1 mediaDTO = new MediaDTO1();
-        mediaDTO.setMediaId(media.getMedia_id());
-        mediaDTO.setFileUrl(media.getFileUrl());
-        mediaDTO.setFileType(media.getFileType());
-        mediaDTO.setFileSize(media.getFileSize());
-        mediaDTO.setUploadedAt(media.getUploadedAt());
-        return mediaDTO;
-    }
 
+    public MediaDTO1 addMediaToProduct(Integer productId, MultipartFile file) throws IOException {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            File targetFile = new File(uploadDir + File.separator + fileName);
+            file.transferTo(targetFile);
+
+            Media media = new Media();
+            media.setFileUrl(fileName);
+            media.setFileType(file.getContentType());
+            media.setFileSize((int) file.getSize());
+            media.setProductId(productId);
+            media.setUploadedAt(new Timestamp(System.currentTimeMillis()));
+
+            media = mediaRepository.save(media);
+            return convertMediaToDTO1(media);
+        } else {
+            throw new IOException("Product not found");
+        }
+    }
     public ProductDTO1 updateProduct(Integer productId, ProductDTO1 productDTO) {
         Optional<Product> productOptional = productRepository.findById(productId);
         if (productOptional.isPresent()) {
@@ -111,4 +129,30 @@ public class ProductService {
             return null;
         }
     }
+
+    public ProductDTO1 createProduct(ProductDTO1 productDTO) {
+        Product product = new Product();
+        product.setProductName(productDTO.getProductName());
+        product.setDescription(productDTO.getDescription());
+        if (productDTO.getStatus() != null) {
+            product.setStatus(Product.ProductStatus.valueOf(productDTO.getStatus()));
+        }
+        if (productDTO.getCategoryId() != null) {
+            product.setCategoryId(productDTO.getCategoryId());
+        }
+
+        product = productRepository.save(product);
+        return convertToDTO1(product);
+    }
+
+    private MediaDTO1 convertMediaToDTO1(Media media) {
+        MediaDTO1 mediaDTO = new MediaDTO1();
+        mediaDTO.setMediaId(media.getMedia_id());
+        mediaDTO.setFileUrl(media.getFileUrl());
+        mediaDTO.setFileType(media.getFileType());
+        mediaDTO.setFileSize(media.getFileSize());
+        mediaDTO.setUploadedAt(media.getUploadedAt());
+        return mediaDTO;
+    }
+
 }

@@ -2,7 +2,7 @@
 import "./editProduct.scss";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
-import axios, { AxiosResponse } from "axios";
+import { fetchProductById, updateProduct, addProductImage, deleteProductImage } from "../../services/productService";
 import { fetchCategories } from "../../services/categoryService";
 import {
     Container,
@@ -64,9 +64,9 @@ const EditProduct = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response: AxiosResponse<Product> = await axios.get(`http://localhost:8080/api/products/${productId}`);
-                setProduct(response.data);
-                setFormData(response.data);
+                const data = await fetchProductById(Number(productId));
+                setProduct(data);
+                setFormData(data);
             } catch (error) {
                 console.error("Error fetching product data:", error);
             }
@@ -93,29 +93,31 @@ const EditProduct = () => {
         }));
     };
 
-    const handleSave = () => {
-        // Save logic here
-        console.log("Product saved:", formData);
-        navigate("/products");
+    const handleSave = async () => {
+        try {
+            await updateProduct(Number(productId), formData);
+            console.log("Product saved:", formData);
+            navigate("/products");
+        } catch (error) {
+            console.error("Error saving product:", error);
+        }
     };
 
-    const handleAddImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleAddImage = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const uploadFormData = new FormData();
-            uploadFormData.append("image", file);
             setUploading(true);
-            axios.post("/upload", uploadFormData)
-                .then((response: AxiosResponse<{ url: string }>) => {
-                    setFormData((prev) => ({
-                        ...prev,
-                        medias: [...(prev.medias || []), { fileUrl: response.data.url } as Media],
-                    }));
-                    setUploading(false);
-                })
-                .catch(() => {
-                    setUploading(false);
-                });
+            try {
+                const newMedia = await addProductImage(Number(productId), file);
+                setFormData((prev) => ({
+                    ...prev,
+                    medias: [...(prev.medias || []), newMedia],
+                }));
+                setUploading(false);
+            } catch (error) {
+                setUploading(false);
+                console.error("Error uploading image:", error);
+            }
         }
     };
 
@@ -124,25 +126,21 @@ const EditProduct = () => {
         setDeleteDialogOpen(true);
     };
 
-    const handleDeleteConfirm = (action: string) => {
+    const handleDeleteConfirm = async (action: string) => {
         if (imageToDelete !== null) {
-            if (action === "url") {
-                const updatedMedias = formData.medias?.filter((_, i) => i !== imageToDelete);
-                setFormData((prev) => ({
-                    ...prev,
-                    medias: updatedMedias,
-                }));
-            } else if (action === "permanent") {
-                const imageUrl = formData.medias?.[imageToDelete]?.fileUrl;
-                axios.post("/delete", { url: imageUrl })
-                    .then(() => {
-                        const updatedMedias = formData.medias?.filter((_, i) => i !== imageToDelete);
-                        setFormData((prev) => ({
-                            ...prev,
-                            medias: updatedMedias,
-                        }));
-                    });
+            const imageUrl = formData.medias?.[imageToDelete]?.fileUrl;
+            if (action === "permanent" && imageUrl) {
+                try {
+                    await deleteProductImage(imageUrl);
+                } catch (error) {
+                    console.error("Error deleting image:", error);
+                }
             }
+            const updatedMedias = formData.medias?.filter((_, i) => i !== imageToDelete);
+            setFormData((prev) => ({
+                ...prev,
+                medias: updatedMedias,
+            }));
         }
         setDeleteDialogOpen(false);
         setImageToDelete(null);

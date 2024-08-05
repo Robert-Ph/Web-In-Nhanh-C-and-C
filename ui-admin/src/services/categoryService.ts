@@ -1,9 +1,14 @@
-// ui-admin/src/services/categoryService.ts
-import axios from 'axios';
+// src/services/categoryService.ts
+import axiosClient from '../api/axiosClient';
 
-const API_URL = 'http://localhost:8080/api';
+export interface Category {
+    category_id: number;
+    categoryName: string;
+    description: string;
+    parentId: number | null;
+}
 
-export const fetchCategories = async () => {
-    const response = await axios.get(`${API_URL}/categories`);
+export const fetchCategories = async (): Promise<Category[]> => {
+    const response = await axiosClient.get('/categories');
     return response.data;
 };

@@ -1,11 +1,15 @@
 package com.webinnhanhcandc.controller;
 
+import com.webinnhanhcandc.dto.MediaDTO1;
 import com.webinnhanhcandc.dto.ProductDTO1;
 import com.webinnhanhcandc.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/products")
@@ -38,6 +42,21 @@ public class ProductController {
             return ResponseEntity.ok(updatedProduct);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+    @PostMapping
+    public ResponseEntity<ProductDTO1> createProduct(@RequestBody ProductDTO1 productDTO) {
+        ProductDTO1 createdProduct = productService.createProduct(productDTO);
+        return ResponseEntity.ok(createdProduct);
+    }
+
+    @PostMapping("/{productId}/media")
+    public ResponseEntity<MediaDTO1> addMediaToProduct(@PathVariable Integer productId, @RequestParam("file") MultipartFile file) {
+        try {
+            MediaDTO1 createdMedia = productService.addMediaToProduct(productId, file);
+            return ResponseEntity.ok(createdMedia);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).build();
         }
     }
 }
