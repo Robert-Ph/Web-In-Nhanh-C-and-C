@@ -1,8 +1,15 @@
 // ui-admin/src/pages/products/EditProduct.tsx
 import "./editProduct.scss";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
-import { fetchProductById, updateProduct, addProductImage, deleteProductImage } from "../../services/productService";
+import {
+    fetchProductById,
+    updateProduct,
+    addProductImage,
+    deleteMediaPermanently,
+    deleteMediaUrl,
+    fetchProductStatuses
+} from "../../services/productService";
 import { fetchCategories } from "../../services/categoryService";
 import {
     Container,
@@ -24,54 +31,32 @@ import {
     DialogTitle,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-
-interface Media {
-    mediaId: number;
-    fileUrl: string;
-    fileType: string;
-    fileSize: number;
-    uploadedAt: string;
-}
-
-interface Product {
-    productId: number;
-    categoryId: number;
-    categoryName: string;
-    productName: string;
-    description: string;
-    status: string;
-    createdAt: string;
-    medias: Media[];
-}
-
-interface Category {
-    category_id: number;
-    categoryName: string;
-    description: string;
-    parentId: number | null;
-}
+import { getImageUrl } from "../../utils/imageUtils";
+import { Product, Category, ProductStatus } from '../../interfaces'; // Sử dụng các interface từ interfaces.ts
 
 const EditProduct = () => {
     const { productId } = useParams<{ productId: string }>();
-    const navigate = useNavigate();
     const [product, setProduct] = useState<Product | null>(null);
     const [formData, setFormData] = useState<Partial<Product>>({});
     const [categories, setCategories] = useState<Category[]>([]);
+    const [statuses, setStatuses] = useState<ProductStatus[]>([]);
     const [uploading, setUploading] = useState<boolean>(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
     const [imageToDelete, setImageToDelete] = useState<number | null>(null);
+    const [imageDialogOpen, setImageDialogOpen] = useState<boolean>(false);
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string>("");
+
+    const fetchProduct = async () => {
+        try {
+            const data = await fetchProductById(Number(productId));
+            setProduct(data);
+            setFormData(data);
+        } catch (error) {
+            console.error("Error fetching product data:", error);
+        }
+    };
 
     useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const data = await fetchProductById(Number(productId));
-                setProduct(data);
-                setFormData(data);
-            } catch (error) {
-                console.error("Error fetching product data:", error);
-            }
-        };
-
         const fetchAllCategories = async () => {
             try {
                 const categoriesData: Category[] = await fetchCategories();
@@ -81,8 +66,19 @@ const EditProduct = () => {
             }
         };
 
+        const fetchAllStatuses = async () => {
+            try {
+                const statusesData: ProductStatus[] = await fetchProductStatuses();
+                setStatuses(statusesData);
+                console.log(statusesData)
+            } catch (error) {
+                console.error("Error fetching statuses:", error);
+            }
+        };
+
         fetchProduct();
         fetchAllCategories();
+        fetchAllStatuses();
     }, [productId]);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -97,7 +93,7 @@ const EditProduct = () => {
         try {
             await updateProduct(Number(productId), formData);
             console.log("Product saved:", formData);
-            navigate("/products");
+            fetchProduct();
         } catch (error) {
             console.error("Error saving product:", error);
         }
@@ -113,10 +109,10 @@ const EditProduct = () => {
                     ...prev,
                     medias: [...(prev.medias || []), newMedia],
                 }));
-                setUploading(false);
             } catch (error) {
-                setUploading(false);
                 console.error("Error uploading image:", error);
+            } finally {
+                setUploading(false);
             }
         }
     };
@@ -128,19 +124,21 @@ const EditProduct = () => {
 
     const handleDeleteConfirm = async (action: string) => {
         if (imageToDelete !== null) {
-            const imageUrl = formData.medias?.[imageToDelete]?.fileUrl;
-            if (action === "permanent" && imageUrl) {
-                try {
-                    await deleteProductImage(imageUrl);
-                } catch (error) {
-                    console.error("Error deleting image:", error);
+            const mediaId = formData.medias?.[imageToDelete]?.mediaId;
+            try {
+                if (action === "permanent" && mediaId) {
+                    await deleteMediaPermanently(mediaId);
+                } else if (mediaId) {
+                    await deleteMediaUrl(mediaId);
                 }
+                const updatedMedias = formData.medias?.filter((_, i) => i !== imageToDelete);
+                setFormData((prev) => ({
+                    ...prev,
+                    medias: updatedMedias,
+                }));
+            } catch (error) {
+                console.error("Error deleting image:", error);
             }
-            const updatedMedias = formData.medias?.filter((_, i) => i !== imageToDelete);
-            setFormData((prev) => ({
-                ...prev,
-                medias: updatedMedias,
-            }));
         }
         setDeleteDialogOpen(false);
         setImageToDelete(null);
@@ -149,6 +147,16 @@ const EditProduct = () => {
     const handleDeleteCancel = () => {
         setDeleteDialogOpen(false);
         setImageToDelete(null);
+    };
+
+    const handleImageClick = (imageUrl: string) => {
+        setSelectedImageUrl(imageUrl);
+        setImageDialogOpen(true);
+    };
+
+    const handleImageDialogClose = () => {
+        setImageDialogOpen(false);
+        setSelectedImageUrl("");
     };
 
     if (!product) {
@@ -204,9 +212,16 @@ const EditProduct = () => {
                                 fullWidth
                                 label="Trạng thái"
                                 name="status"
+                                select
                                 value={formData.status}
                                 onChange={handleInputChange}
-                            />
+                            >
+                                {statuses.map((status) => (
+                                    <MenuItem key={status.value} value={status.value}>
+                                        {status.displayName}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -226,12 +241,15 @@ const EditProduct = () => {
                                             <CardMedia
                                                 component="img"
                                                 height="140"
-                                                image={`http://localhost:8080/api/images/${media.fileUrl}`}
+                                                image={getImageUrl(media.fileUrl)}
                                                 alt={`Ảnh ${index + 1}`}
+                                                onClick={() => handleImageClick(getImageUrl(media.fileUrl))}
+                                                style={{ cursor: 'pointer' }}
                                             />
                                             <CardContent>
                                                 <Box display="flex" justifyContent="center">
-                                                    <IconButton color="secondary" onClick={() => handleRemoveImage(index)}>
+                                                    <IconButton color="secondary"
+                                                                onClick={() => handleRemoveImage(index)}>
                                                         <Delete />
                                                     </IconButton>
                                                 </Box>
@@ -275,6 +293,21 @@ const EditProduct = () => {
                     </Button>
                     <Button onClick={() => handleDeleteConfirm("permanent")} color="secondary">
                         Xóa vĩnh viễn
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={imageDialogOpen}
+                onClose={handleImageDialogClose}
+                maxWidth="md"
+                fullWidth
+            >
+                <DialogContent>
+                    <img src={selectedImageUrl} alt="Product" style={{ width: '100%' }} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleImageDialogClose} color="primary">
+                        Đóng
                     </Button>
                 </DialogActions>
             </Dialog>

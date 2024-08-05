@@ -1,28 +1,13 @@
 // src/services/productService.ts
 import axiosClient from '../api/axiosClient';
+import { Product, Media, ProductStatus } from '../interfaces';
 
-interface Media {
-    mediaId: number;
-    fileUrl: string;
-    fileType: string;
-    fileSize: number;
-    uploadedAt: string;
-}
-
-interface Product {
-    productId: number;
-    categoryId: number;
-    categoryName: string;
-    productName: string;
-    description: string;
-    status: string;
-    createdAt: string;
-    medias: Media[];
-}
-
-export const fetchProducts = async (sort: string, page: number, size: number, categoryId?: number): Promise<{ content: Product[]; totalPages: number; }> => {
+export const fetchProducts = async (sort: string, page: number, size: number, categoryId?: number): Promise<{
+    content: Product[];
+    totalPages: number;
+}> => {
     const response = await axiosClient.get('/products', {
-        params: { sort, page, size, categoryId }
+        params: {sort, page, size, categoryId}
     });
     return response.data;
 };
@@ -48,6 +33,20 @@ export const addProductImage = async (productId: number, file: File): Promise<Me
     return response.data;
 };
 
-export const deleteProductImage = async (imageUrl: string): Promise<void> => {
-    await axiosClient.post('/delete', { url: imageUrl });
+export const deleteMediaUrl = async (mediaId: number): Promise<void> => {
+    await axiosClient.delete(`/products/media/${mediaId}/url`);
+};
+
+export const deleteMediaPermanently = async (mediaId: number): Promise<void> => {
+    await axiosClient.delete(`/products/media/${mediaId}/permanent`);
+};
+
+export const fetchProductStatuses = async (): Promise<ProductStatus[]> => {
+    const response = await axiosClient.get('/products/statuses');
+    console.log("response.data"); // Thêm log để kiểm tra dữ liệu
+
+    return response.data.map((status: { value: string, displayName: string }) => ({
+        value: status.value,
+        displayName: status.displayName
+    }));
 };

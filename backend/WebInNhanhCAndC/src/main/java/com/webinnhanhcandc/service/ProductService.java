@@ -17,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -110,6 +113,23 @@ public class ProductService {
             throw new IOException("Product not found");
         }
     }
+
+    public void deleteMediaUrl(Integer mediaId) {
+        mediaRepository.deleteById(mediaId);
+    }
+
+    public void deleteMediaPermanently(Integer mediaId) throws IOException {
+        Optional<Media> mediaOptional = mediaRepository.findById(mediaId);
+        if (mediaOptional.isPresent()) {
+            Media media = mediaOptional.get();
+            Path filePath = Paths.get(uploadDir, media.getFileUrl());
+            Files.deleteIfExists(filePath);
+            mediaRepository.deleteById(mediaId);
+        } else {
+            throw new IOException("Media not found");
+        }
+    }
+
     public ProductDTO1 updateProduct(Integer productId, ProductDTO1 productDTO) {
         Optional<Product> productOptional = productRepository.findById(productId);
         if (productOptional.isPresent()) {

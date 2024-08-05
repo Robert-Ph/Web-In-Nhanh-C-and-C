@@ -2,14 +2,20 @@ package com.webinnhanhcandc.controller;
 
 import com.webinnhanhcandc.dto.MediaDTO1;
 import com.webinnhanhcandc.dto.ProductDTO1;
+import com.webinnhanhcandc.dto.ProductStatusDTO;
+import com.webinnhanhcandc.entity.Product;
 import com.webinnhanhcandc.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -59,4 +65,50 @@ public class ProductController {
             return ResponseEntity.status(500).build();
         }
     }
+
+    @DeleteMapping("/media/{mediaId}/url")
+    public ResponseEntity<Void> deleteMediaUrl(@PathVariable Integer mediaId) {
+        productService.deleteMediaUrl(mediaId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/media/{mediaId}/permanent")
+    public ResponseEntity<Void> deleteMediaPermanently(@PathVariable Integer mediaId) {
+        try {
+            productService.deleteMediaPermanently(mediaId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/statuses")
+    public ResponseEntity<List<ProductStatusDTO>> getAllProductStatuses() {
+        List<ProductStatusDTO> statuses = Arrays.stream(Product.ProductStatus.values())
+                .map(status -> {
+                    String statusInVietnamese = "";
+                    switch (status) {
+                        case available:
+                            statusInVietnamese = "Có sẵn";
+                            break;
+                        case out_of_stock:
+                            statusInVietnamese = "Hết hàng";
+                            break;
+                        case discontinued:
+                            statusInVietnamese = "Ngừng kinh doanh";
+                            break;
+                        case hidden:
+                            statusInVietnamese = "Ẩn";
+                            break;
+                    }
+                    return new ProductStatusDTO(status.name(), statusInVietnamese);
+                })
+                .collect(Collectors.toList());
+
+        statuses.forEach(s -> System.out.println(s.getValue() + ": " + s.getDisplayName())); // Thêm dòng này
+
+        return ResponseEntity.ok(statuses);
+    }
+
+
 }

@@ -1,10 +1,10 @@
 // ui-admin/src/pages/products/Products.tsx
 import "./products.scss";
-import { useState } from "react";
-import { useQuery } from "react-query";
-import { fetchCategories, Category } from "../../services/categoryService";
-import { fetchProducts } from "../../services/productService";
-import { getImageUrl } from "../../utils/imageUtils";
+import {useState} from "react";
+import {useQuery} from "react-query";
+import {fetchCategories, Category} from "../../services/categoryService";
+import {fetchProducts} from "../../services/productService";
+import {getImageUrl} from "../../utils/imageUtils";
 import {
     Container,
     Grid,
@@ -20,25 +20,25 @@ import {
     ListItemText,
     Pagination,
 } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import {Edit, Delete} from "@mui/icons-material";
+import {Link} from "react-router-dom";
 
 const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 12;
 
-    const { data: categories = [] } = useQuery('categories', fetchCategories, {
+    const {data: categories = []} = useQuery('categories', fetchCategories, {
         select: (data) => [
-            { category_id: -1, categoryName: 'Tất cả', description: '', parentId: null } as Category,
+            {category_id: -1, categoryName: 'Tất cả', description: '', parentId: null} as Category,
             ...data
         ],
     });
 
-    const { data: productData = { content: [], totalPages: 1 } } = useQuery(
+    const {data: productData = {content: [], totalPages: 1}} = useQuery(
         ['products', selectedCategory, currentPage],
         () => fetchProducts('desc', currentPage - 1, productsPerPage, selectedCategory || undefined),
-        { keepPreviousData: true }
+        {keepPreviousData: true}
     );
 
     const handleCategoryChange = (categoryId: number | null) => {
@@ -71,7 +71,7 @@ const Products = () => {
                                         onClick={() => handleCategoryChange(category.category_id === -1 ? null : category.category_id)}
                                         key={category.category_id}
                                     >
-                                        <ListItemText primary={category.categoryName} />
+                                        <ListItemText primary={category.categoryName}/>
                                     </ListItem>
                                 ))}
                             </List>
@@ -94,11 +94,12 @@ const Products = () => {
                                             {truncate(product.productName, 30)}
                                         </Typography>
                                         <Box mt={2} display="flex" justifyContent="space-between">
-                                            <IconButton color="primary" component={Link} to={`/products/edit/${product.productId}`}>
-                                                <Edit />
+                                            <IconButton color="primary" component={Link}
+                                                        to={`/products/edit/${product.productId}`}>
+                                                <Edit/>
                                             </IconButton>
                                             <IconButton color="secondary">
-                                                <Delete />
+                                                <Delete/>
                                             </IconButton>
                                         </Box>
                                     </CardContent>
@@ -107,7 +108,8 @@ const Products = () => {
                         ))}
                     </Grid>
                     <Box mt={3} display="flex" justifyContent="center">
-                        <Pagination count={productData.totalPages} page={currentPage} onChange={handlePageChange} color="primary" />
+                        <Pagination count={productData.totalPages} page={currentPage} onChange={handlePageChange}
+                                    color="primary"/>
                     </Box>
                 </Grid>
             </Grid>
