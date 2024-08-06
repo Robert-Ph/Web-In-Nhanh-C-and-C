@@ -1,5 +1,5 @@
 // src/App.tsx
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -9,7 +9,7 @@ import BannerSection from "./components/BannerSection";
 import Newsletter from "./components/Newsletter";
 import FeatureSectionServiceShop from "./components/FeatureSectionServiceShop.tsx";
 import Footer from "./components/Footer";
-import ProductDetail from "./pages/ProductDetail.tsx";
+import ProductDetail from "./pages/ProductDetail/ProductDetail.tsx";
 import SignIn from "./pages/SignIn.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import ForgotPass from "./pages/ForgotPass.tsx";
@@ -27,6 +27,7 @@ const App = () => {
         <ThemeProvider>
             <Router>
                 <Routes>
+                    <Route path='/' element={<Navigate to="/home" replace />} />
                     <Route path='/*' element={
                         <>
                             <ScrollToTop />

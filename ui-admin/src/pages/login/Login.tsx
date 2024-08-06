@@ -9,7 +9,7 @@ const Login = () => {
             <div className="header">
                 <div className="title text"><h1>VFLT</h1></div>
                 <div className="title text_2">
-                    <h1>SYSTEM <br/> MANAGMENT</h1>
+                    <h1>WEB <br/> SERVICE</h1>
                 </div>
 
 

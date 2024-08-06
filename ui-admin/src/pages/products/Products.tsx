@@ -1,7 +1,10 @@
 // ui-admin/src/pages/products/Products.tsx
 import "./products.scss";
 import {useState} from "react";
-import {products} from "../../data.ts";
+import {useQuery} from "react-query";
+import {fetchCategories, Category} from "../../services/categoryService";
+import {fetchProducts} from "../../services/productService";
+import {getImageUrl} from "../../utils/imageUtils";
 import {
     Container,
     Grid,
@@ -20,25 +23,26 @@ import {
 import {Edit, Delete} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 
-interface Product {
-    id: number;
-    imgs: string[];
-    title: string;
-    category: string;
-    color: string;
-    producer: string;
-    price: string;
-    createdAt: string;
-    inStock: boolean;
-}
-
 const Products = () => {
-    const [selectedCategory, setSelectedCategory] = useState("Tất cả");
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 8;
+    const productsPerPage = 12;
 
-    const handleCategoryChange = (category: string) => {
-        setSelectedCategory(category);
+    const {data: categories = []} = useQuery('categories', fetchCategories, {
+        select: (data) => [
+            {category_id: -1, categoryName: 'Tất cả', description: '', parentId: null} as Category,
+            ...data
+        ],
+    });
+
+    const {data: productData = {content: [], totalPages: 1}} = useQuery(
+        ['products', selectedCategory, currentPage],
+        () => fetchProducts('desc', currentPage - 1, productsPerPage, selectedCategory || undefined),
+        {keepPreviousData: true}
+    );
+
+    const handleCategoryChange = (categoryId: number | null) => {
+        setSelectedCategory(categoryId);
         setCurrentPage(1);
     };
 
@@ -47,27 +51,8 @@ const Products = () => {
     };
 
     const truncate = (str: string, maxLength: number) => {
-        if (str.length <= maxLength) {
-            return str;
-        }
-        return str.slice(0, maxLength) + '...';
+        return str.length <= maxLength ? str : str.slice(0, maxLength) + "...";
     };
-
-    const filteredProducts = selectedCategory === "Tất cả"
-        ? products
-        : products.filter((product: Product) => product.category === selectedCategory);
-
-    const paginatedProducts = filteredProducts.slice(
-        (currentPage - 1) * productsPerPage,
-        currentPage * productsPerPage
-    );
-
-    const categories = [
-        "Tất cả",
-        "Gaming",
-        "Electronics",
-        "Home Appliances",
-    ];
 
     return (
         <Container>
@@ -82,11 +67,11 @@ const Products = () => {
                                 {categories.map((category) => (
                                     <ListItem
                                         button
-                                        selected={selectedCategory === category}
-                                        onClick={() => handleCategoryChange(category)}
-                                        key={category}
+                                        selected={selectedCategory === category.category_id}
+                                        onClick={() => handleCategoryChange(category.category_id === -1 ? null : category.category_id)}
+                                        key={category.category_id}
                                     >
-                                        <ListItemText primary={category}/>
+                                        <ListItemText primary={category.categoryName}/>
                                     </ListItem>
                                 ))}
                             </List>
@@ -95,25 +80,22 @@ const Products = () => {
                 </Grid>
                 <Grid item xs={12} sm={10}>
                     <Grid container spacing={3} className="product-list">
-                        {paginatedProducts.map((product: Product) => (
-                            <Grid item xs={12} sm={6} md={3} key={product.id}>
+                        {productData.content.map((product) => (
+                            <Grid item xs={12} sm={6} md={3} key={product.productId}>
                                 <Card className="product-card">
                                     <CardMedia
                                         height={200}
                                         component="img"
-                                        alt={product.title}
-                                        image={product.imgs[0]}
+                                        alt={product.productName}
+                                        image={getImageUrl(product.medias[0]?.fileUrl)}
                                     />
                                     <CardContent className="product-info">
                                         <Typography gutterBottom variant="h5" component="div" height={90}>
-                                            {truncate(product.title, 30)}
+                                            {truncate(product.productName, 30)}
                                         </Typography>
                                         <Box mt={2} display="flex" justifyContent="space-between">
-                                            <IconButton
-                                                color="primary"
-                                                component={Link}
-                                                to={`/products/edit/${product.id}`}
-                                            >
+                                            <IconButton color="primary" component={Link}
+                                                        to={`/products/edit/${product.productId}`}>
                                                 <Edit/>
                                             </IconButton>
                                             <IconButton color="secondary">
@@ -126,12 +108,8 @@ const Products = () => {
                         ))}
                     </Grid>
                     <Box mt={3} display="flex" justifyContent="center">
-                        <Pagination
-                            count={Math.ceil(filteredProducts.length / productsPerPage)}
-                            page={currentPage}
-                            onChange={handlePageChange}
-                            color="primary"
-                        />
+                        <Pagination count={productData.totalPages} page={currentPage} onChange={handlePageChange}
+                                    color="primary"/>
                     </Box>
                 </Grid>
             </Grid>
