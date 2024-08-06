@@ -57,14 +57,17 @@ public class ProductController {
     }
 
     @PostMapping("/{productId}/media")
-    public ResponseEntity<MediaDTO1> addMediaToProduct(@PathVariable Integer productId, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<List<MediaDTO1>> addMediaToProduct(
+            @PathVariable Integer productId,
+            @RequestParam("files") MultipartFile[] files) {
         try {
-            MediaDTO1 createdMedia = productService.addMediaToProduct(productId, file);
-            return ResponseEntity.ok(createdMedia);
+            List<MediaDTO1> createdMedias = productService.addMediaToProduct(productId, files);
+            return ResponseEntity.ok(createdMedias);
         } catch (IOException e) {
             return ResponseEntity.status(500).build();
         }
     }
+
 
     @DeleteMapping("/media/{mediaId}/url")
     public ResponseEntity<Void> deleteMediaUrl(@PathVariable Integer mediaId) {

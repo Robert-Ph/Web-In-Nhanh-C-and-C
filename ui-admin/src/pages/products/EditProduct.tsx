@@ -5,7 +5,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import {
     fetchProductById,
     updateProduct,
-    addProductImage,
+    addProductImages,
     deleteMediaPermanently,
     deleteMediaUrl,
     fetchProductStatuses
@@ -32,7 +32,7 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { getImageUrl } from "../../utils/imageUtils";
-import { Product, Category, ProductStatus } from '../../interfaces'; // Sử dụng các interface từ interfaces.ts
+import { Product, Category, ProductStatus } from '../../interfaces';
 
 const EditProduct = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -99,18 +99,18 @@ const EditProduct = () => {
         }
     };
 
-    const handleAddImage = async (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
+    const handleAddImages = async (e: ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        if (files.length > 0) {
             setUploading(true);
             try {
-                const newMedia = await addProductImage(Number(productId), file);
+                const newMedias = await addProductImages(Number(productId), files);
                 setFormData((prev) => ({
                     ...prev,
-                    medias: [...(prev.medias || []), newMedia],
+                    medias: [...(prev.medias || []), ...newMedias],
                 }));
             } catch (error) {
-                console.error("Error uploading image:", error);
+                console.error("Error uploading images:", error);
             } finally {
                 setUploading(false);
             }
@@ -260,7 +260,7 @@ const EditProduct = () => {
                                 <Grid item xs={12}>
                                     <Button variant="contained" component="label" color="primary">
                                         Thêm ảnh mới
-                                        <input type="file" hidden onChange={handleAddImage} />
+                                        <input type="file" hidden multiple onChange={handleAddImages} />
                                     </Button>
                                     {uploading && <Typography variant="body2">Đang tải lên...</Typography>}
                                 </Grid>

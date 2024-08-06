@@ -22,9 +22,11 @@ export const updateProduct = async (productId: number, productData: Partial<Prod
     return response.data;
 };
 
-export const addProductImage = async (productId: number, file: File): Promise<Media> => {
+export const addProductImages = async (productId: number, files: File[]): Promise<Media[]> => {
     const formData = new FormData();
-    formData.append('file', file);
+    files.forEach((file) => {
+        formData.append('files', file);
+    });
     const response = await axiosClient.post(`/products/${productId}/media`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -43,10 +45,13 @@ export const deleteMediaPermanently = async (mediaId: number): Promise<void> => 
 
 export const fetchProductStatuses = async (): Promise<ProductStatus[]> => {
     const response = await axiosClient.get('/products/statuses');
-    console.log("response.data"); // Thêm log để kiểm tra dữ liệu
-
     return response.data.map((status: { value: string, displayName: string }) => ({
         value: status.value,
         displayName: status.displayName
     }));
+};
+
+export const createProduct = async (productData: Partial<Product>): Promise<Product> => {
+    const response = await axiosClient.post('/products', productData);
+    return response.data;
 };
