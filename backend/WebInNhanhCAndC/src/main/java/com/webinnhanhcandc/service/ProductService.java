@@ -9,16 +9,27 @@ import com.webinnhanhcandc.repository.CategoryRepository;
 import com.webinnhanhcandc.repository.MediaRepository;
 import com.webinnhanhcandc.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
+    @Value("${upload.dir}")
+    private String uploadDir;
 
     @Autowired
     private ProductRepository productRepository;
@@ -82,6 +93,89 @@ public class ProductService {
         return productDTO;
     }
 
+    public List<MediaDTO1> addMediaToProduct(Integer productId, MultipartFile[] files) throws IOException {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isEmpty()) {
+            throw new IOException("Product not found");
+        }
+
+        List<MediaDTO1> mediaDTOList = new ArrayList<>();
+        for (MultipartFile file : files) {
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            File targetFile = new File(uploadDir + File.separator + fileName);
+            file.transferTo(targetFile);
+
+            Media media = new Media();
+            media.setFileUrl(fileName);
+            media.setFileType(file.getContentType());
+            media.setFileSize((int) file.getSize());
+            media.setProductId(productId);
+            media.setUploadedAt(new Timestamp(System.currentTimeMillis()));
+
+            media = mediaRepository.save(media);
+            mediaDTOList.add(convertMediaToDTO1(media));
+        }
+
+        return mediaDTOList;
+    }
+
+    public void deleteMediaUrl(Integer mediaId) {
+        mediaRepository.deleteById(mediaId);
+    }
+
+    public void deleteMediaPermanently(Integer mediaId) throws IOException {
+        Optional<Media> mediaOptional = mediaRepository.findById(mediaId);
+        if (mediaOptional.isPresent()) {
+            Media media = mediaOptional.get();
+            Path filePath = Paths.get(uploadDir, media.getFileUrl());
+            Files.deleteIfExists(filePath);
+            mediaRepository.deleteById(mediaId);
+        } else {
+            throw new IOException("Media not found");
+        }
+    }
+
+    public ProductDTO1 updateProduct(Integer productId, ProductDTO1 productDTO) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            product.setProductName(productDTO.getProductName());
+            product.setDescription(productDTO.getDescription());
+            if (productDTO.getStatus() != null) {
+                product.setStatus(Product.ProductStatus.valueOf(productDTO.getStatus()));
+            }
+            if (productDTO.getCategoryId() != null) {
+                product.setCategoryId(productDTO.getCategoryId());
+            }
+
+            product = productRepository.save(product);
+            return convertToDTO1(product);
+        } else {
+            return null;
+        }
+    }
+
+
+    public ProductDTO1 createProduct(ProductDTO1 productDTO) {
+        Product product = new Product();
+        product.setProductName(productDTO.getProductName());
+        product.setDescription(productDTO.getDescription());
+
+        // Nếu status không có giá trị, mặc định là "available"
+        if (productDTO.getStatus() != null) {
+            product.setStatus(Product.ProductStatus.valueOf(productDTO.getStatus()));
+        } else {
+            product.setStatus(Product.ProductStatus.available);
+        }
+
+        if (productDTO.getCategoryId() != null) {
+            product.setCategoryId(productDTO.getCategoryId());
+        }
+
+        product = productRepository.save(product);
+        return convertToDTO1(product);
+    }
+
     private MediaDTO1 convertMediaToDTO1(Media media) {
         MediaDTO1 mediaDTO = new MediaDTO1();
         mediaDTO.setMediaId(media.getMedia_id());
@@ -91,4 +185,5 @@ public class ProductService {
         mediaDTO.setUploadedAt(media.getUploadedAt());
         return mediaDTO;
     }
+
 }

@@ -1,8 +1,8 @@
 // ui-admin/src/pages/products/CreateProduct.tsx
-import "./createProduct.scss"; // Reuse the same styles as
-import { useNavigate } from "react-router-dom";
-import { useState, ChangeEvent } from "react";
-import axios from "axios";
+import "./createProduct.scss";
+import { useState, useEffect, ChangeEvent } from "react";
+import { fetchCategories, Category } from "../../services/categoryService";
+import { createProduct, addProductImages } from "../../services/productService";
 import {
     Container,
     Typography,
@@ -18,9 +18,11 @@ import {
     CardContent,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Product {
-    imgs: string[];
+    imgs: File[];
     title: string;
     description: string;
     category: string;
@@ -32,13 +34,25 @@ interface Product {
 }
 
 const CreateProduct = () => {
-    const navigate = useNavigate();
     const [formData, setFormData] = useState<Partial<Product>>({
         imgs: [],
         inStock: true,
     });
+    const [categories, setCategories] = useState<Category[]>([]);
     const [uploading, setUploading] = useState<boolean>(false);
-    const [, setImageToDelete] = useState<number | null>(null);
+
+    useEffect(() => {
+        const fetchAllCategories = async () => {
+            try {
+                const categoriesData = await fetchCategories();
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+
+        fetchAllCategories();
+    }, []);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -48,35 +62,77 @@ const CreateProduct = () => {
         }));
     };
 
-    const handleSave = () => {
-        // Save logic here
-        console.log("Product created:", formData);
-        navigate("/products");
-    };
+    const handleSave = async () => {
+        if (!formData.title) {
+            toast.error("Tên sản phẩm không được để trống.");
+            return;
+        }
+        if (!formData.category) {
+            toast.error("Bạn phải chọn loại sản phẩm.");
+            return;
+        }
 
-    const handleAddImage = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const uploadFormData = new FormData();
-            uploadFormData.append("image", file);
-            setUploading(true);
-            axios.post("/upload", uploadFormData)
-                .then((response) => {
-                    setFormData((prev) => ({
-                        ...prev,
-                        imgs: [...(prev.imgs || []), response.data.url],
-                    }));
-                    setUploading(false);
-                })
-                .catch(() => {
-                    setUploading(false);
-                });
+        const productData = {
+            productName: formData.title,
+            description: formData.description,
+            status: "available",
+            categoryId: formData.category ? parseInt(formData.category) : undefined,
+        };
+
+        try {
+            const createdProduct = await createProduct(productData);
+            console.log("Product created:", createdProduct);
+
+            if (createdProduct.productId && formData.imgs && formData.imgs.length > 0) {
+                await handleAddImages(createdProduct.productId, formData.imgs);
+            }
+
+            // Reset form
+            setFormData({
+                imgs: [],
+                inStock: true,
+                title: "",
+                description: "",
+                category: "",
+                color: "",
+                producer: "",
+                price: "",
+                createdAt: "",
+            });
+            toast.success("Sản phẩm đã được tạo thành công!");
+        } catch (error) {
+            console.error("Error creating product:", error);
+            toast.error("Đã xảy ra lỗi khi tạo sản phẩm.");
         }
     };
 
-    const handleRemoveImage = (index: number) => {
-        setImageToDelete(index);
+    const handleAddImages = async (productId: number, files: File[]) => {
+        setUploading(true);
+        try {
+            await addProductImages(productId, files);
+        } catch (error) {
+            console.error("Error uploading images:", error);
+            toast.error("Đã xảy ra lỗi khi tải lên hình ảnh.");
+        } finally {
+            setUploading(false);
+        }
     };
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        setFormData((prev) => ({
+            ...prev,
+            imgs: [...(prev.imgs || []), ...files],
+        }));
+    };
+
+    const handleRemoveImage = (index: number) => {
+        setFormData((prev) => ({
+            ...prev,
+            imgs: prev.imgs?.filter((_, i) => i !== index) || [],
+        }));
+    };
+
     return (
         <Container>
             <Typography variant="h4" gutterBottom>
@@ -103,9 +159,11 @@ const CreateProduct = () => {
                                 value={formData.category || ""}
                                 onChange={handleInputChange}
                             >
-                                <MenuItem value="Gaming">Gaming</MenuItem>
-                                <MenuItem value="Electronics">Electronics</MenuItem>
-                                <MenuItem value="Home Appliances">Home Appliances</MenuItem>
+                                {categories.map((category) => (
+                                    <MenuItem key={category.category_id} value={category.category_id.toString()}>
+                                        {category.categoryName}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>
@@ -128,7 +186,7 @@ const CreateProduct = () => {
                                             <CardMedia
                                                 component="img"
                                                 height="140"
-                                                image={img || "https://via.placeholder.com/140"}
+                                                image={URL.createObjectURL(img)}
                                                 alt={`Ảnh ${index + 1}`}
                                             />
                                             <CardContent>
@@ -144,7 +202,7 @@ const CreateProduct = () => {
                                 <Grid item xs={12}>
                                     <Button variant="contained" component="label" color="primary">
                                         Thêm ảnh mới
-                                        <input type="file" hidden onChange={handleAddImage} />
+                                        <input type="file" hidden multiple onChange={handleFileChange} />
                                     </Button>
                                     {uploading && <Typography variant="body2">Đang tải lên...</Typography>}
                                 </Grid>
@@ -158,6 +216,7 @@ const CreateProduct = () => {
                     </Box>
                 </Box>
             </Paper>
+            <ToastContainer />
         </Container>
     );
 };
