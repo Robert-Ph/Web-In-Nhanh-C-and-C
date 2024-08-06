@@ -124,7 +124,7 @@ const Navbar = () => {
                     <div className="flex items-center">
                         <Link to="/" className="mt-1">
                             {/*<img rel="icon"  href="/LogoCandC.svg"/>*/}
-                            <img className="ml-32 mt-2" style={{width:'200px', height:'70px'}} src="../../public/LogoCandC.svg" alt="logo"/>
+                            <img className="ml-10 mt-2" style={{width:'125px', height:'70px'}} src="../../public/LogoCandC.svg" alt="logo"/>
                             <h1 className="text-4xl font-medium ml-32" style={{color: 'white', backgroundColor: 'orange'}}></h1>
                         </Link>
                         <div className="relative flex items-center ml-8 bg-white bg-opacity-20 p-2 rounded-lg" onMouseLeave={handleCategoryMouseLeave}>
