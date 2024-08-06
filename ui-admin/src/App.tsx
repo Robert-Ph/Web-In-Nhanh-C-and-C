@@ -16,7 +16,9 @@ import SystemLog from "./pages/system/SystemLog.tsx";
 import theme from './theme';
 import AccountDetail from "./pages/accounts/AccountDetail.tsx";
 import Login from  "./pages/login/Login.tsx";
-import {QueryClient, QueryClientProvider} from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const queryClient = new QueryClient();
 
@@ -36,7 +38,6 @@ const Layout = () => {
     );
 };
 
-
 const router = createBrowserRouter([
     {path:"/admin", element:<Login />},
     {
@@ -52,7 +53,6 @@ const router = createBrowserRouter([
             { path: "/products/create", element: <CreateProduct /> },
             { path: "/system-log", element: <SystemLog /> },
             { path: "/account/:id", element: <AccountDetail /> },
-
         ],
     },
 ]);
@@ -63,6 +63,7 @@ function App() {
             <CssBaseline />
             <QueryClientProvider client={queryClient}>
                 <RouterProvider router={router} />
+                <ToastContainer />
             </QueryClientProvider>
         </ThemeProvider>
     );

@@ -33,6 +33,8 @@ import {
 import { Delete } from "@mui/icons-material";
 import { getImageUrl } from "../../utils/imageUtils";
 import { Product, Category, ProductStatus } from '../../interfaces';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditProduct = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -90,12 +92,23 @@ const EditProduct = () => {
     };
 
     const handleSave = async () => {
+        if (!formData.productName) {
+            toast.error("Tên sản phẩm không được để trống.");
+            return;
+        }
+        if (!formData.categoryId) {
+            toast.error("Bạn phải chọn loại sản phẩm.");
+            return;
+        }
+
         try {
             await updateProduct(Number(productId), formData);
             console.log("Product saved:", formData);
+            toast.success("Sản phẩm đã được lưu thành công!");
             fetchProduct();
         } catch (error) {
             console.error("Error saving product:", error);
+            toast.error("Đã xảy ra lỗi khi lưu sản phẩm.");
         }
     };
 
@@ -109,8 +122,10 @@ const EditProduct = () => {
                     ...prev,
                     medias: [...(prev.medias || []), ...newMedias],
                 }));
+                toast.success("Ảnh đã được tải lên thành công!");
             } catch (error) {
                 console.error("Error uploading images:", error);
+                toast.error("Đã xảy ra lỗi khi tải lên ảnh.");
             } finally {
                 setUploading(false);
             }
@@ -136,8 +151,10 @@ const EditProduct = () => {
                     ...prev,
                     medias: updatedMedias,
                 }));
+                toast.success("Ảnh đã được xóa thành công!");
             } catch (error) {
                 console.error("Error deleting image:", error);
+                toast.error("Đã xảy ra lỗi khi xóa ảnh.");
             }
         }
         setDeleteDialogOpen(false);
@@ -311,6 +328,7 @@ const EditProduct = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <ToastContainer />
         </Container>
     );
 };

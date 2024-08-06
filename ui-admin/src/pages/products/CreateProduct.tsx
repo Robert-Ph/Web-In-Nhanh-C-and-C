@@ -2,7 +2,7 @@
 import "./createProduct.scss";
 import { useState, useEffect, ChangeEvent } from "react";
 import { fetchCategories, Category } from "../../services/categoryService";
-import { createProduct, addProductImages } from "../../services/productService"; // Import addProductImages
+import { createProduct, addProductImages } from "../../services/productService";
 import {
     Container,
     Typography,
@@ -18,6 +18,8 @@ import {
     CardContent,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Product {
     imgs: File[];
@@ -61,6 +63,15 @@ const CreateProduct = () => {
     };
 
     const handleSave = async () => {
+        if (!formData.title) {
+            toast.error("Tên sản phẩm không được để trống.");
+            return;
+        }
+        if (!formData.category) {
+            toast.error("Bạn phải chọn loại sản phẩm.");
+            return;
+        }
+
         const productData = {
             productName: formData.title,
             description: formData.description,
@@ -76,9 +87,22 @@ const CreateProduct = () => {
                 await handleAddImages(createdProduct.productId, formData.imgs);
             }
 
-            window.location.reload();
+            // Reset form
+            setFormData({
+                imgs: [],
+                inStock: true,
+                title: "",
+                description: "",
+                category: "",
+                color: "",
+                producer: "",
+                price: "",
+                createdAt: "",
+            });
+            toast.success("Sản phẩm đã được tạo thành công!");
         } catch (error) {
             console.error("Error creating product:", error);
+            toast.error("Đã xảy ra lỗi khi tạo sản phẩm.");
         }
     };
 
@@ -88,6 +112,7 @@ const CreateProduct = () => {
             await addProductImages(productId, files);
         } catch (error) {
             console.error("Error uploading images:", error);
+            toast.error("Đã xảy ra lỗi khi tải lên hình ảnh.");
         } finally {
             setUploading(false);
         }
@@ -191,6 +216,7 @@ const CreateProduct = () => {
                     </Box>
                 </Box>
             </Paper>
+            <ToastContainer />
         </Container>
     );
 };
