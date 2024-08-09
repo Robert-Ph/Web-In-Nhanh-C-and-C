@@ -32,23 +32,26 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { getImageUrl } from "../../utils/imageUtils";
-import { Product, Category, ProductStatus } from '../../interfaces';
+import { Product, Category, ProductStatus, Media, PartialProduct } from '../../interfaces';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { formatDateTime } from "../../utils/dateUtils";
 
 const EditProduct = () => {
     const { productId } = useParams<{ productId: string }>();
     const [product, setProduct] = useState<Product | null>(null);
-    const [formData, setFormData] = useState<Partial<Product>>({});
+    const [formData, setFormData] = useState<PartialProduct>({});
     const [categories, setCategories] = useState<Category[]>([]);
     const [statuses, setStatuses] = useState<ProductStatus[]>([]);
-    const [uploading, setUploading] = useState<boolean>(false);
+    const [newImages, setNewImages] = useState<File[]>([]);
+    const [tempMedias, setTempMedias] = useState<Media[]>([]);
+    const [deleteActions, setDeleteActions] = useState<{ mediaId: number, action: string }[]>([]);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
     const [imageToDelete, setImageToDelete] = useState<number | null>(null);
     const [imageDialogOpen, setImageDialogOpen] = useState<boolean>(false);
     const [selectedImageUrl, setSelectedImageUrl] = useState<string>("");
 
-    const fetchProduct = async () => {
+    const fetchProductData = async () => {  // Sửa tên hàm này để tránh trùng với biến
         try {
             const data = await fetchProductById(Number(productId));
             setProduct(data);
@@ -72,13 +75,12 @@ const EditProduct = () => {
             try {
                 const statusesData: ProductStatus[] = await fetchProductStatuses();
                 setStatuses(statusesData);
-                console.log(statusesData)
             } catch (error) {
                 console.error("Error fetching statuses:", error);
             }
         };
 
-        fetchProduct();
+        fetchProductData();
         fetchAllCategories();
         fetchAllStatuses();
     }, [productId]);
@@ -102,60 +104,69 @@ const EditProduct = () => {
         }
 
         try {
+            // Cập nhật thông tin sản phẩm
             await updateProduct(Number(productId), formData);
             console.log("Product saved:", formData);
+
+            // Thêm ảnh mới
+            if (newImages.length > 0) {
+                await addProductImages(Number(productId), newImages);
+                setNewImages([]);
+                setTempMedias([]);
+            }
+
+            // Xóa ảnh theo hành động đã lưu
+            for (const action of deleteActions) {
+                if (action.action === "permanent") {
+                    await deleteMediaPermanently(action.mediaId);
+                } else if (action.action === "url") {
+                    await deleteMediaUrl(action.mediaId);
+                }
+            }
+            setDeleteActions([]);
+
             toast.success("Sản phẩm đã được lưu thành công!");
-            fetchProduct();
+            fetchProductData();  // Gọi lại fetchProductData để cập nhật UI
         } catch (error) {
             console.error("Error saving product:", error);
             toast.error("Đã xảy ra lỗi khi lưu sản phẩm.");
         }
     };
 
-    const handleAddImages = async (e: ChangeEvent<HTMLInputElement>) => {
+    const handleAddImages = (e: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         if (files.length > 0) {
-            setUploading(true);
-            try {
-                const newMedias = await addProductImages(Number(productId), files);
-                setFormData((prev) => ({
-                    ...prev,
-                    medias: [...(prev.medias || []), ...newMedias],
-                }));
-                toast.success("Ảnh đã được tải lên thành công!");
-            } catch (error) {
-                console.error("Error uploading images:", error);
-                toast.error("Đã xảy ra lỗi khi tải lên ảnh.");
-            } finally {
-                setUploading(false);
-            }
+            setNewImages((prev) => [...prev, ...files]);
+            const newTempMedias: Media[] = files.map((file, index) => ({
+                mediaId: -(Date.now() + index), // ID tạm thời để hiển thị, đảm bảo giá trị là số âm để không trùng với ID từ server
+                fileUrl: URL.createObjectURL(file),
+                fileType: file.type,
+                fileSize: file.size,
+                uploadedAt: new Date().toISOString(),
+            }));
+            setTempMedias((prev) => [...prev, ...newTempMedias]);
         }
     };
 
-    const handleRemoveImage = (index: number) => {
-        setImageToDelete(index);
-        setDeleteDialogOpen(true);
+    const handleRemoveImage = (index: number, isTemp: boolean) => {
+        if (isTemp) {
+            setTempMedias((prev) => prev.filter((_, i) => i !== index));
+            setNewImages((prev) => prev.filter((_, i) => i !== index));
+        } else {
+            setImageToDelete(index);
+            setDeleteDialogOpen(true);
+        }
     };
 
-    const handleDeleteConfirm = async (action: string) => {
-        if (imageToDelete !== null) {
-            const mediaId = formData.medias?.[imageToDelete]?.mediaId;
-            try {
-                if (action === "permanent" && mediaId) {
-                    await deleteMediaPermanently(mediaId);
-                } else if (mediaId) {
-                    await deleteMediaUrl(mediaId);
-                }
-                const updatedMedias = formData.medias?.filter((_, i) => i !== imageToDelete);
-                setFormData((prev) => ({
-                    ...prev,
-                    medias: updatedMedias,
-                }));
-                toast.success("Ảnh đã được xóa thành công!");
-            } catch (error) {
-                console.error("Error deleting image:", error);
-                toast.error("Đã xảy ra lỗi khi xóa ảnh.");
-            }
+    const handleDeleteConfirm = (action: string) => {
+        if (imageToDelete !== null && formData.medias?.[imageToDelete]) {
+            const media = formData.medias[imageToDelete];
+            setDeleteActions((prev) => [...prev, { mediaId: media.mediaId, action }]);
+            const updatedMedias = formData.medias.filter((_, i) => i !== imageToDelete);
+            setFormData((prev) => ({
+                ...prev,
+                medias: updatedMedias,
+            }));
         }
         setDeleteDialogOpen(false);
         setImageToDelete(null);
@@ -193,7 +204,7 @@ const EditProduct = () => {
                                 fullWidth
                                 label="Tên sản phẩm"
                                 name="productName"
-                                value={formData.productName}
+                                value={formData.productName || ""}
                                 onChange={handleInputChange}
                             />
                         </Grid>
@@ -203,7 +214,7 @@ const EditProduct = () => {
                                 label="Loại sản phẩm"
                                 name="categoryId"
                                 select
-                                value={formData.categoryId}
+                                value={formData.categoryId || ""}
                                 onChange={handleInputChange}
                             >
                                 {categories.map((category) => (
@@ -220,17 +231,17 @@ const EditProduct = () => {
                                 name="description"
                                 multiline
                                 rows={4}
-                                value={formData.description}
+                                value={formData.description || ""}
                                 onChange={handleInputChange}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={4}>
                             <TextField
                                 fullWidth
                                 label="Trạng thái"
                                 name="status"
                                 select
-                                value={formData.status}
+                                value={formData.status || ""}
                                 onChange={handleInputChange}
                             >
                                 {statuses.map((status) => (
@@ -240,13 +251,26 @@ const EditProduct = () => {
                                 ))}
                             </TextField>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={4}>
                             <TextField
                                 fullWidth
                                 label="Ngày tạo"
                                 name="createdAt"
-                                value={formData.createdAt}
-                                onChange={handleInputChange}
+                                value={formatDateTime(formData.createdAt || undefined)}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <TextField
+                                fullWidth
+                                label="Ngày cập nhật cuối"
+                                name="lastUpdated"
+                                value={formatDateTime(formData.lastUpdated || undefined)}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -266,7 +290,29 @@ const EditProduct = () => {
                                             <CardContent>
                                                 <Box display="flex" justifyContent="center">
                                                     <IconButton color="secondary"
-                                                                onClick={() => handleRemoveImage(index)}>
+                                                                onClick={() => handleRemoveImage(index, false)}>
+                                                        <Delete />
+                                                    </IconButton>
+                                                </Box>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                ))}
+                                {tempMedias.map((media, index) => (
+                                    <Grid item xs={12} sm={6} md={4} key={media.mediaId}>
+                                        <Card>
+                                            <CardMedia
+                                                component="img"
+                                                height="140"
+                                                image={media.fileUrl}
+                                                alt={`Ảnh tạm thời ${index + 1}`}
+                                                onClick={() => handleImageClick(media.fileUrl)}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                            <CardContent>
+                                                <Box display="flex" justifyContent="center">
+                                                    <IconButton color="secondary"
+                                                                onClick={() => handleRemoveImage(index, true)}>
                                                         <Delete />
                                                     </IconButton>
                                                 </Box>
@@ -279,7 +325,6 @@ const EditProduct = () => {
                                         Thêm ảnh mới
                                         <input type="file" hidden multiple onChange={handleAddImages} />
                                     </Button>
-                                    {uploading && <Typography variant="body2">Đang tải lên...</Typography>}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -305,12 +350,21 @@ const EditProduct = () => {
                     <Button onClick={handleDeleteCancel} color="primary">
                         Hủy
                     </Button>
-                    <Button onClick={() => handleDeleteConfirm("url")} color="primary">
-                        Chỉ xóa URL
-                    </Button>
-                    <Button onClick={() => handleDeleteConfirm("permanent")} color="secondary">
-                        Xóa vĩnh viễn
-                    </Button>
+                    {imageToDelete !== null && formData.medias?.[imageToDelete]?.mediaId !== -1 && (
+                        <>
+                            <Button onClick={() => handleDeleteConfirm("url")} color="primary">
+                                Chỉ xóa URL
+                            </Button>
+                            <Button onClick={() => handleDeleteConfirm("permanent")} color="secondary">
+                                Xóa vĩnh viễn
+                            </Button>
+                        </>
+                    )}
+                    {imageToDelete !== null && formData.medias?.[imageToDelete]?.mediaId === -1 && (
+                        <Button onClick={() => handleDeleteConfirm("remove")} color="secondary">
+                            Xóa khỏi danh sách
+                        </Button>
+                    )}
                 </DialogActions>
             </Dialog>
             <Dialog

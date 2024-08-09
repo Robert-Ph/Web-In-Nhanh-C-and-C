@@ -108,7 +108,7 @@ public class ProductController {
                 })
                 .collect(Collectors.toList());
 
-        statuses.forEach(s -> System.out.println(s.getValue() + ": " + s.getDisplayName())); // Thêm dòng này
+        statuses.forEach(s -> System.out.println(s.getValue() + ": " + s.getDisplayName()));
 
         return ResponseEntity.ok(statuses);
     }

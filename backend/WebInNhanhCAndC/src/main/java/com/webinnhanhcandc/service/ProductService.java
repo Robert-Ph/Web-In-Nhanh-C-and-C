@@ -38,7 +38,7 @@ public class ProductService {
     private MediaRepository mediaRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository; // Thêm CategoryRepository
+    private CategoryRepository categoryRepository;
 
     public Page<ProductDTO1> getAllProductsSortedByCreatedAt(String sortDirection, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
@@ -68,7 +68,7 @@ public class ProductService {
 
     public ProductDTO1 getProductById(Integer productId) {
         Optional<Product> productOptional = productRepository.findById(productId);
-        return productOptional.map(this::convertToDTO1).orElse(null); // Trả về null nếu không tìm thấy sản phẩm
+        return productOptional.map(this::convertToDTO1).orElse(null);
     }
 
     private ProductDTO1 convertToDTO1(Product product) {
@@ -79,6 +79,7 @@ public class ProductService {
         productDTO.setDescription(product.getDescription());
         productDTO.setStatus(product.getStatus().name());
         productDTO.setCreatedAt(product.getCreatedAt());
+        productDTO.setLastUpdated(product.getLastUpdated());
 
         // Lấy danh sách ảnh sản phẩm
         List<Media> medias = mediaRepository.findByProductId(product.getProductId());
@@ -147,14 +148,13 @@ public class ProductService {
             if (productDTO.getCategoryId() != null) {
                 product.setCategoryId(productDTO.getCategoryId());
             }
-
+            product.setLastUpdated(new Timestamp(System.currentTimeMillis()));
             product = productRepository.save(product);
             return convertToDTO1(product);
         } else {
             return null;
         }
     }
-
 
     public ProductDTO1 createProduct(ProductDTO1 productDTO) {
         Product product = new Product();
@@ -171,7 +171,8 @@ public class ProductService {
         if (productDTO.getCategoryId() != null) {
             product.setCategoryId(productDTO.getCategoryId());
         }
-
+        product.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        product.setLastUpdated(new Timestamp(System.currentTimeMillis()));
         product = productRepository.save(product);
         return convertToDTO1(product);
     }

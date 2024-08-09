@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Getter
 @Setter
@@ -35,10 +34,25 @@ public class Product {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @Column(name = "last_updated")
+    private Timestamp lastUpdated;
+
     public enum ProductStatus {
         available,
         out_of_stock,
         discontinued,
         hidden
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        createdAt = currentTimestamp;
+        lastUpdated = currentTimestamp;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        lastUpdated = new Timestamp(System.currentTimeMillis());
     }
 }
