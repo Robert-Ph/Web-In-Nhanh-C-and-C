@@ -25,7 +25,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public Page<ProductDTO1> getAllProducts(@RequestParam(defaultValue = "desc") String sort,
+    public Page<ProductDTO1> getAllProducts(@RequestParam(defaultValue = "newest") String sort,
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size,
                                             @RequestParam(required = false) Integer categoryId) {

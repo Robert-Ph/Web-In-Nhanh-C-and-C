@@ -37,7 +37,7 @@ const Products = () => {
 
     const {data: productData = {content: [], totalPages: 1}} = useQuery(
         ['products', selectedCategory, currentPage],
-        () => fetchProducts('desc', currentPage - 1, productsPerPage, selectedCategory || undefined),
+        () => fetchProducts('newest', currentPage - 1, productsPerPage, selectedCategory || undefined),
         {keepPreviousData: true}
     );
 

@@ -44,7 +44,7 @@ public class ProductService {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Product> products;
 
-        if ("oldest".equalsIgnoreCase(sortDirection)) {
+        if ("newest".equalsIgnoreCase(sortDirection)) {
             products = productRepository.findAllByOrderByCreatedAtDesc(pageRequest);
         } else {
             products = productRepository.findAllByOrderByCreatedAtAsc(pageRequest);
@@ -57,7 +57,7 @@ public class ProductService {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Product> products;
 
-        if ("oldest".equalsIgnoreCase(sortDirection)) {
+        if ("newest".equalsIgnoreCase(sortDirection)) {
             products = productRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageRequest);
         } else {
             products = productRepository.findByCategoryIdOrderByCreatedAtAsc(categoryId, pageRequest);
