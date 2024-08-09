@@ -16,5 +16,6 @@ public class ProductDTO1 {
     private String description;
     private String status;
     private Timestamp createdAt;
+    private Timestamp lastUpdated;
     private List<MediaDTO1> medias;
 }

@@ -6,7 +6,9 @@ export interface Media {
     fileType: string;
     fileSize: number;
     uploadedAt: string;
+    file?: File;
 }
+
 
 export interface Product {
     productId: number;
@@ -16,6 +18,7 @@ export interface Product {
     description: string;
     status: string;
     createdAt: string;
+    lastUpdated: string | null;
     medias: Media[];
 }
 
@@ -30,3 +33,7 @@ export interface ProductStatus {
     value: string;
     displayName: string;
 }
+
+export type PartialProduct = Partial<Product> & {
+    lastUpdated?: string | null;
+};
